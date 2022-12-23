@@ -19,13 +19,13 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             app:shapeAppearance="@style/roundingImageView"
-            android:id="@+id/imageCardView"
+            android:id="@+id/catDetailsImageIV"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/plant3" />
 
         <TextView
-            android:id="@+id/textCardView"
+            android:id="@+id/catDetailsBreedTV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/rv_cat_breed"

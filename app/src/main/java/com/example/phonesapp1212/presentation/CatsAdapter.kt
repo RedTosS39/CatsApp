@@ -1,6 +1,7 @@
 package com.example.phonesapp1212.presentation
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,7 @@ class CatsAdapter(
 ) :
     RecyclerView.Adapter<CatsAdapter.MovieHolder>() {
 
-    val list: MutableList<Breed> = mList as MutableList<Breed>
+    private val list: MutableList<Breed> = mList as MutableList<Breed>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
         val view =
@@ -36,28 +37,31 @@ class CatsAdapter(
     }
 
     inner class MovieHolder(movieViewHolder: View) : RecyclerView.ViewHolder(movieViewHolder) {
-        private val text: TextView = movieViewHolder.findViewById(R.id.textCardView)
-        private val image: ImageView = movieViewHolder.findViewById(R.id.imageCardView)
+        private val text: TextView = movieViewHolder.findViewById(R.id.catDetailsBreedTV)
+        private val image: ImageView = movieViewHolder.findViewById(R.id.catDetailsImageIV)
         fun bind(item: Breed?) {
-
             text.text = item?.name
             Picasso
                 .get()
-                .load("https://cdn2.thecatapi.com/images/"+item?.reference_image_id+".jpg")
+                .load("https://cdn2.thecatapi.com/images/" + item?.reference_image_id + ".jpg")
                 .into(image)
         }
 
         init {
             movieViewHolder.setOnClickListener {
-                deleteItem(absoluteAdapterPosition)
-                clickable.onClickListener(absoluteAdapterPosition)
+
+                list[absoluteAdapterPosition].reference_image_id.let {
+                    clickable.onClickListener(it)
+                    Log.d("pokemon", ":clicked ${list[absoluteAdapterPosition]} ")
+                }
             }
         }
 
-        private fun deleteItem(position: Int) {
-            list.removeAt(position)
-            notifyDataSetChanged()
-        }
+        /*   private fun deleteItem(position: Int) {
+               list.removeAt(position)
+               notifyDataSetChanged()
+           }
+           */
     }
 }
 

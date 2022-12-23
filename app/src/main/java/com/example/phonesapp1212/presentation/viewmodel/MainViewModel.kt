@@ -1,6 +1,5 @@
 package com.example.phonesapp1212.presentation.viewmodel
 
-
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,11 +15,10 @@ import retrofit2.Response
 
 class MainViewModel: ViewModel() {
 
-    private val _catList = MutableLiveData<List<Breed>>()
-    val catList: LiveData<List<Breed>> = _catList
-
     //insert di next
     private val catListRepository : CatListRepository = CatListRepositoryImpl()
+    private val _catList = MutableLiveData<List<Breed>>()
+    val catList: LiveData<List<Breed>> = _catList
 
      fun getCatsResponse()  {
          viewModelScope.launch {
@@ -28,13 +26,14 @@ class MainViewModel: ViewModel() {
              response.enqueue(object : Callback<List<Breed>> {
                  override fun onResponse(call: Call<List<Breed>>, response: Response<List<Breed>>) {
                      if (response.body() != null) {
-                         Log.d("pokemon", "onClickListener: $response")
+                         Log.d("pokemon", "onResponse: ${response.body()!![0].reference_image_id}")
+
                          _catList.postValue(response.body())
                      }
                  }
 
                  override fun onFailure(call: Call<List<Breed>>, t: Throwable) {
-                     Log.d("pokemon", "fail")
+                     Log.d("pokemon", "onFailure ${t.toString()}")
                  }
              })
          }
