@@ -1,16 +1,22 @@
 package com.example.data.retrofit
 
 import com.example.data.model.cats.Breed
+import com.example.data.model.cats.CatBreedDetails
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 
 interface CatApiServices {
 
     @GET("breeds")
-    fun getCatByBreed() : Call<List<Breed>>
+    fun getCatsList() : Call<List<Breed>>
+
+    @GET("images/{id}")
+    fun getCatByBreed(@Path("id") id: String) : Call<CatBreedDetails>
+
 
     companion object  {
 

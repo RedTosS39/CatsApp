@@ -1,7 +1,7 @@
 package com.example.phonesapp1212.presentation.view
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.activity.viewModels
@@ -15,6 +15,7 @@ import com.example.phonesapp1212.repository.IClickable
 import com.example.phonesapp1212.presentation.CatsAdapter
 import com.example.phonesapp1212.presentation.viewmodel.MainViewModel
 import com.example.phonesapp1212.presentation.viewmodel.SplashViewModel
+
 
 class MainActivity : AppCompatActivity(), IClickable {
 
@@ -30,23 +31,23 @@ class MainActivity : AppCompatActivity(), IClickable {
         setContentView(R.layout.activity_main)
         startSplash()
         initViews()
-        initCatObserver()
+        initCatListFromApi()
         mainViewModule.getCatsResponse()
 
-        mainViewModule?.apply {
+    }
+
+    private fun initCatListFromApi() {
+
+        mainViewModule.apply {
             catList.observe(this@MainActivity) { response ->
                 if (response == null) {
                     return@observe
                 }
                 catsAdapter = CatsAdapter(response, this@MainActivity)
                 recyclerView.adapter = catsAdapter
+
             }
         }
-    }
-
-
-    private fun initCatObserver() {
-
     }
 
     private fun startSplash() {
@@ -67,12 +68,16 @@ class MainActivity : AppCompatActivity(), IClickable {
         )
     }
 
-    override fun onClickListener(position: Int) {
-        Log.d("pokemon", "onClickListener: $position")
+    override fun onClickListener(id: String) {
+
+        val intent = Intent(this@MainActivity, CatDetailActivity::class.java)
+        intent.putExtra("id", id )
+        startActivity(intent)
     }
 
     private fun initViews() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
     }
+
 }

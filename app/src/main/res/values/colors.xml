@@ -11,4 +11,5 @@
     <color name="splash_background_Color">#F1B606</color>
     <color name="cardview_background">#FFD6D6D6</color>
     <color name="recycler_background">#C5C5C5</color>
+    <color name="text_color">#433F3F</color>
 </resources>
