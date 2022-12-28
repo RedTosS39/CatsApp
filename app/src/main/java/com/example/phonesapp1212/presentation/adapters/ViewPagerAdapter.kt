@@ -21,8 +21,9 @@ class ViewPagerAdapter(private val list: BreedModel)
         fun onBind(position: Int) {
             Picasso
                 .get()
-                .load("https://cdn2.thecatapi.com/images/${list[position].url}")
+                .load(list[position].url)
                 .into(image)
+
         }
     }
 

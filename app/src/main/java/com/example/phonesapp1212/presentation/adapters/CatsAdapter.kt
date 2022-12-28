@@ -51,17 +51,24 @@ class CatsAdapter(
             movieViewHolder.setOnClickListener {
 
                 list[absoluteAdapterPosition].reference_image_id.let {
-                    clickable.onClickListener(it)
+                    try {
+                        clickable.onClickListener(it)
+
+                    } catch (e: Exception) {
+                        e.toString()
+
+                    }
+
                     Log.d("pokemon", ":clicked ${list[absoluteAdapterPosition]} ")
                 }
             }
         }
 
-        /*   private fun deleteItem(position: Int) {
-               list.removeAt(position)
-               notifyDataSetChanged()
-           }
-           */
+//          private fun deleteItem(position: Int) {
+//               list.removeAt(position)
+//               notifyDataSetChanged()
+//          }
+
     }
 }
 
