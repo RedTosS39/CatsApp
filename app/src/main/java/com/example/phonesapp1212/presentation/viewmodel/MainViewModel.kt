@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.model.cats.Breed
 import com.example.data.repository.CatListRepository
 import com.example.data.repository.CatListRepositoryImpl
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,7 +22,7 @@ class MainViewModel: ViewModel() {
     val catList: LiveData<List<Breed>> = _catList
 
      fun getCatsResponse()  {
-         viewModelScope.launch {
+         viewModelScope.launch(Dispatchers.IO) {
              val response = catListRepository.getCatList()
              response.enqueue(object : Callback<List<Breed>> {
                  override fun onResponse(call: Call<List<Breed>>, response: Response<List<Breed>>) {
