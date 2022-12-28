@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.phonesapp1212.R
 import com.example.phonesapp1212.repository.IClickable
-import com.example.phonesapp1212.presentation.CatsAdapter
+import com.example.phonesapp1212.presentation.adapters.CatsAdapter
 import com.example.phonesapp1212.presentation.viewmodel.MainViewModel
 import com.example.phonesapp1212.presentation.viewmodel.SplashViewModel
 

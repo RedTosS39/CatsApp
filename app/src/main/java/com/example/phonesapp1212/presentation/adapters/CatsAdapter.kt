@@ -1,4 +1,4 @@
-package com.example.phonesapp1212.presentation
+package com.example.phonesapp1212.presentation.adapters
 
 
 import android.util.Log
