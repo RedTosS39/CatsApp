@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.model.cats.Breed
 import com.example.phonesapp1212.R
@@ -65,10 +64,10 @@ class CatsAdapter(
             }
         }
 
-          private fun deleteItem(position: Int) {
-               list.removeAt(position)
-               notifyDataSetChanged()
-          }
+//          private fun deleteItem(position: Int) {
+//               list.removeAt(position)
+//               notifyDataSetChanged()
+//          }
 
     }
 }
