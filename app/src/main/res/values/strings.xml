@@ -2,4 +2,7 @@
     <string name="app_name">Cats</string>
     <string name="rv_cat_breed">Cat breed</string>
     <string name="cat_details">Cat Details</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cat_breed_title">Cat breed title</string>
 </resources>

@@ -5,11 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.data.model.cats.Breed
 import com.example.data.model.cats.CatBreedDetails
 import com.example.data.repository.CatBreedRepository
 import com.example.data.repository.CatBreedRepositoryImpl
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,6 +30,7 @@ class CatDetailViewModel : ViewModel() {
                         Log.d("pokemon", "onResponse: ${response.body()}")
 
                         mMutableLiveData.postValue(response.body())
+                        val breedId = response.body()!!.id
                     }
                 }
 
