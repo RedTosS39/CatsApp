@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
-import com.example.data.model.cats.BreedModel
+import com.example.data.web.model.cats.BreedModel
 import com.example.phonesapp1212.R
 import com.squareup.picasso.Picasso
 

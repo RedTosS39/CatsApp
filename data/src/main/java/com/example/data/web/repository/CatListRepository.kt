@@ -1,6 +1,6 @@
-package com.example.data.repository
+package com.example.data.web.repository
 
-import com.example.data.model.cats.Breed
+import com.example.data.web.model.cats.Breed
 import retrofit2.Call
 import retrofit2.Response
 

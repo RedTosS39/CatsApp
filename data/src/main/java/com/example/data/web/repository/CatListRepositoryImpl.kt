@@ -1,7 +1,7 @@
-package com.example.data.repository
+package com.example.data.web.repository
 
-import com.example.data.model.cats.Breed
-import com.example.data.retrofit.CatApiServices
+import com.example.data.web.model.cats.Breed
+import com.example.data.web.retrofit.CatApiServices
 import retrofit2.Call
 
 

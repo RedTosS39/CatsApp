@@ -1,4 +1,4 @@
-package com.example.data.model.cats
+package com.example.data.web.model.cats
 
 data class CatModelItem(
     val breeds: List<Any>,
