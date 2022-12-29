@@ -10,17 +10,24 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.data.room.database.AppDatabase
+import com.example.data.room.repository.CatDatabaseRepository
+import com.example.data.room.repository.CatDatabaseRepositoryImp
 import com.example.phonesapp1212.R
-import com.example.phonesapp1212.repository.IClickable
 import com.example.phonesapp1212.presentation.adapters.CatsAdapter
 import com.example.phonesapp1212.presentation.viewmodel.MainViewModel
 import com.example.phonesapp1212.presentation.viewmodel.SplashViewModel
+import com.example.phonesapp1212.repository.IClickable
+import com.example.data.room.database.AppDatabase.Companion.getDatabase
 
 
 class MainActivity : AppCompatActivity(), IClickable {
 
     private val splashViewModel: SplashViewModel by viewModels()
     private val mainViewModule: MainViewModel by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
+    private val database by lazy { AppDatabase.getDatabase(this)}
+    private val catDatabaseRepository: CatDatabaseRepository by lazy { CatDatabaseRepositoryImp(database.catDao()) }
+
     private lateinit var catsAdapter: CatsAdapter
     private lateinit var recyclerView: RecyclerView
 

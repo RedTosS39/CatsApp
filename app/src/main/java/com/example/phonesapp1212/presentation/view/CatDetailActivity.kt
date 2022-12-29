@@ -9,8 +9,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
-import com.example.data.model.cats.BreedModel
-import com.example.data.model.cats.CatBreedDetails
+import com.example.data.web.model.cats.BreedModel
+import com.example.data.web.model.cats.CatBreedDetails
 import com.example.phonesapp1212.R
 import com.example.phonesapp1212.presentation.adapters.ViewPagerAdapter
 import com.example.phonesapp1212.presentation.viewmodel.CatDetailViewModel
@@ -43,31 +43,30 @@ class CatDetailActivity : AppCompatActivity() {
 
     private fun getResult() {
         viewModel.apply {
-            liveData.observe(this@CatDetailActivity) { response ->
-                if (response == null) {
-                    return@observe
-                }
-                getCatsDetails(response)
-                currentCatViewModel.getCatInfo(response.breeds[0].id)
+            liveData.observe(this@CatDetailActivity) { it?.let{
+
+                getCatsDetails(it)
+            }
+                currentCatViewModel.getCatInfo(it.breeds[0].id)
             }
         }
 
         currentCatViewModel.apply {
-            liveData.observe(this@CatDetailActivity) { response ->
-                if (response == null) {
-                    return@observe
+            liveData.observe(this@CatDetailActivity) {
+                it?.let {
+                    getBreedModel(it)
                 }
-                getBreedModel(response)
             }
         }
     }
 
     private fun getCatsDetails(catBreedDetails: CatBreedDetails) {
 
-        catBreedDetails.breeds.let {
-            catBreedDetailsTitle.text = it[0].name
-            catDetailsTV.text = it[0].description
+        catBreedDetails.breeds[0].let  {
+            catBreedDetailsTitle.text = it.name
+            catDetailsTV.text = it.description
         }
+
         Picasso.get().load(catBreedDetails.url).into(catImageDetails)
     }
 
