@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.model.cats.Breed
+import com.example.data.web.model.cats.Breed
 import com.example.phonesapp1212.R
 import com.example.phonesapp1212.repository.IClickable
 import com.squareup.picasso.Picasso
@@ -39,6 +39,9 @@ class CatsAdapter(
     inner class MovieHolder(movieViewHolder: View) : RecyclerView.ViewHolder(movieViewHolder) {
         private val text: TextView = movieViewHolder.findViewById(R.id.catDetailsBreedTV)
         private val image: ImageView = movieViewHolder.findViewById(R.id.catDetailsImageIV)
+        private val favorite: ImageView = movieViewHolder.findViewById(R.id.favoriteImage)
+        private val deleteImage: ImageView = movieViewHolder.findViewById(R.id.deleteImage)
+
         fun bind(item: Breed?) {
             text.text = item?.name
             Picasso
