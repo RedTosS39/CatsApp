@@ -29,6 +29,7 @@ class CatDetailActivity : AppCompatActivity() {
     private val viewModel: CatDetailViewModel by lazy { ViewModelProvider(this)[CatDetailViewModel::class.java] }
     private val currentCatViewModel: CurrentCatViewModel by lazy { ViewModelProvider(this)[CurrentCatViewModel::class.java] }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         supportActionBar?.hide()
         super.onCreate(savedInstanceState)
