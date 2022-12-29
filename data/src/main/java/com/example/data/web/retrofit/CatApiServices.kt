@@ -1,8 +1,8 @@
-package com.example.data.retrofit
+package com.example.data.web.retrofit
 
-import com.example.data.model.cats.Breed
-import com.example.data.model.cats.BreedModel
-import com.example.data.model.cats.CatBreedDetails
+import com.example.data.web.model.cats.Breed
+import com.example.data.web.model.cats.BreedModel
+import com.example.data.web.model.cats.CatBreedDetails
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

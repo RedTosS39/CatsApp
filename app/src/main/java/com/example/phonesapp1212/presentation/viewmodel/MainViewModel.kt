@@ -5,9 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.data.model.cats.Breed
-import com.example.data.repository.CatListRepository
-import com.example.data.repository.CatListRepositoryImpl
+import com.example.data.web.model.cats.Breed
+import com.example.data.web.repository.CatListRepository
+import com.example.data.web.repository.CatListRepositoryImpl
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call

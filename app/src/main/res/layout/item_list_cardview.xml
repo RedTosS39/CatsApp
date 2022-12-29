@@ -18,6 +18,7 @@
         android:background= "@color/cardview_background">
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:layout_weight="2"
             app:shapeAppearance="@style/roundingImageView"
             android:id="@+id/catDetailsImageIV"
             android:layout_width="100dp"
@@ -26,13 +27,35 @@
 
         <TextView
             android:id="@+id/catDetailsBreedTV"
-            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/rv_cat_breed"
             android:textColor="@color/text_color"
             android:textSize="30sp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/favoriteImage"
+            android:layout_weight="3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center|center_horizontal|center_vertical"
+            android:foregroundGravity="center_horizontal"
+            android:src="@drawable/ic_baseline_favorite_border_24"
+            android:layout_marginStart="10dp"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/deleteImage"
+            android:layout_weight="3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_baseline_delete_outline_24"
+            android:layout_gravity="center|center_horizontal|center_vertical"
+            android:foregroundGravity="center_horizontal"
+            android:layout_marginStart="10dp"/>
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.cardview.widget.CardView>
