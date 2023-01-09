@@ -44,10 +44,10 @@ class CatDetailActivity : AppCompatActivity() {
 
     private fun getResult() {
         viewModel.apply {
-            liveData.observe(this@CatDetailActivity) { it?.let{
-
-                getCatsDetails(it)
-            }
+            liveData.observe(this@CatDetailActivity) {
+                it?.let {
+                    getCatsDetails(it)
+                }
                 currentCatViewModel.getCatInfo(it.breeds[0].id)
             }
         }
@@ -63,7 +63,7 @@ class CatDetailActivity : AppCompatActivity() {
 
     private fun getCatsDetails(catBreedDetails: CatBreedDetails) {
 
-        catBreedDetails.breeds[0].let  {
+        catBreedDetails.breeds[0].let {
             catBreedDetailsTitle.text = it.name
             catDetailsTV.text = it.description
         }

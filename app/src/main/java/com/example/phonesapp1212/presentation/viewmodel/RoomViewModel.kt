@@ -1,6 +1,7 @@
 package com.example.phonesapp1212.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -13,7 +14,10 @@ import kotlinx.coroutines.launch
 
 class RoomViewModel(private val catDatabaseRepository: CatDatabaseRepository) : ViewModel() {
 
-    val getAllCats: LiveData<List<CatEntity>> = catDatabaseRepository.getAll().asLiveData()
+
+
+    private val mGetAllCats: MutableLiveData<List<CatEntity>> = catDatabaseRepository.getAll().asLiveData() as MutableLiveData<List<CatEntity>>
+    val getAllCats: LiveData<List<CatEntity>> = mGetAllCats
 
     fun insert(catEntity: CatEntity) {
 
