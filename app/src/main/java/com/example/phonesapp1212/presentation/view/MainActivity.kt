@@ -25,8 +25,10 @@ class MainActivity : AppCompatActivity(), IClickable {
 
     private val splashViewModel: SplashViewModel by viewModels()
     private val mainViewModule: MainViewModel by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
+
     private val database by lazy { AppDatabase.getDatabase(this)}
     private val catDatabaseRepository: CatDatabaseRepository by lazy { CatDatabaseRepositoryImp(database.catDao()) }
+
 
     private lateinit var catsAdapter: CatsAdapter
     private lateinit var recyclerView: RecyclerView
@@ -40,7 +42,6 @@ class MainActivity : AppCompatActivity(), IClickable {
         initViews()
         initCatListFromApi()
         mainViewModule.getCatsResponse()
-
     }
 
     private fun initCatListFromApi() {

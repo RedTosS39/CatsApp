@@ -52,20 +52,33 @@ class CatsAdapter(
 
         init {
             movieViewHolder.setOnClickListener {
-
                 list[absoluteAdapterPosition].reference_image_id.let {
                     try {
                         clickable.onClickListener(it)
-
                     } catch (e: Exception) {
                         e.toString()
-
                     }
 
                     Log.d("pokemon", ":clicked ${list[absoluteAdapterPosition]} ")
                 }
             }
+
+
+            var isInDatabase  = true
+            favorite.setOnClickListener {
+
+                isInDatabase = if (isInDatabase) {
+                    favorite.setImageResource(R.drawable.ic_baseline_favorite_24_added)
+                    false
+                } else {
+                    favorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                    true
+                }
+            }
+
+
         }
+
 
 //          private fun deleteItem(position: Int) {
 //               list.removeAt(position)
