@@ -13,6 +13,8 @@ import kotlinx.coroutines.launch
 
 class RoomViewModel(private val catDatabaseRepository: CatDatabaseRepository) : ViewModel() {
 
+
+
     val getAllCats: LiveData<List<CatEntity>> = catDatabaseRepository.getAll().asLiveData()
 
     fun insert(catEntity: CatEntity) {
@@ -22,10 +24,10 @@ class RoomViewModel(private val catDatabaseRepository: CatDatabaseRepository) : 
         }
     }
 
-    fun delete(title: String) {
-        viewModelScope.launch {
-            catDatabaseRepository.deleteById(title)
-        }
-    }
+//    fun delete(title: String) {
+//        viewModelScope.launch {
+//            catDatabaseRepository.deleteById(title)
+//        }
+//    }
 
 }
