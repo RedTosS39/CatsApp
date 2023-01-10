@@ -15,6 +15,13 @@
         android:theme="@style/Theme.PhonesApp1212"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.view.FavoriteActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".presentation.view.CatDetailActivity"
             android:exported="false">
             <meta-data

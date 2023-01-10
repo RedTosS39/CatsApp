@@ -16,6 +16,6 @@ interface CatDao {
     @Insert(onConflict = REPLACE)
     suspend  fun insert(catEntity: CatEntity)
 
-    @Query("DELETE FROM cat_table WHERE id=:title")
+    @Query("DELETE FROM cat_table WHERE title=:title")
     suspend fun deleteById(title: String)
 }
