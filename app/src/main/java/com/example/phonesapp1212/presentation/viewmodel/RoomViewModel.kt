@@ -1,7 +1,6 @@
 package com.example.phonesapp1212.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
@@ -16,8 +15,7 @@ class RoomViewModel(private val catDatabaseRepository: CatDatabaseRepository) : 
 
 
 
-    private val mGetAllCats: MutableLiveData<List<CatEntity>> = catDatabaseRepository.getAll().asLiveData() as MutableLiveData<List<CatEntity>>
-    val getAllCats: LiveData<List<CatEntity>> = mGetAllCats
+    val getAllCats: LiveData<List<CatEntity>> = catDatabaseRepository.getAll().asLiveData()
 
     fun insert(catEntity: CatEntity) {
 
@@ -26,10 +24,10 @@ class RoomViewModel(private val catDatabaseRepository: CatDatabaseRepository) : 
         }
     }
 
-    fun delete(title: String) {
-        viewModelScope.launch {
-            catDatabaseRepository.deleteById(title)
-        }
-    }
+//    fun delete(title: String) {
+//        viewModelScope.launch {
+//            catDatabaseRepository.deleteById(title)
+//        }
+//    }
 
 }
