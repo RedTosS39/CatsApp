@@ -30,16 +30,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/catBreedDetailsTitle">
 
-        <ImageView
-            android:id="@+id/catBreedDetailsImage"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager2"
             android:layout_width="240dp"
             android:layout_height="240dp"
-            android:layout_margin="4dp"
-            android:contentDescription="Image of cats from Api"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/catBreedDetailsTitle"
-            app:srcCompat="@drawable/ic_launcher_foreground" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
 
         <TextView
             android:id="@+id/catDetailsTV"
@@ -57,11 +54,5 @@
             app:layout_constraintVertical_bias="0.0" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
