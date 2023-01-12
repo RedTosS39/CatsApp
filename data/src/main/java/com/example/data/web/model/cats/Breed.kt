@@ -1,5 +1,6 @@
 package com.example.data.web.model.cats
 
+//@Parcelize
 data class Breed(
     val adaptability: Int,
     val affection_level: Int,
@@ -38,4 +39,4 @@ data class Breed(
     val vocalisation: Int,
     val weight: Weight,
     val wikipedia_url: String
-)
+) //: Parcelable

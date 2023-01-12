@@ -1,6 +1,5 @@
 package com.example.phonesapp1212.presentation.view
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -11,19 +10,13 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.data.room.database.AppDatabase
-import com.example.data.room.model.CatEntity
-import com.example.data.room.repository.CatDatabaseRepository
-import com.example.data.room.repository.CatDatabaseRepositoryImp
 import com.example.phonesapp1212.R
+import com.example.phonesapp1212.constants.Constants.breed
+import com.example.phonesapp1212.constants.Constants.id
 import com.example.phonesapp1212.presentation.adapters.CatsAdapter
 import com.example.phonesapp1212.presentation.viewmodel.MainViewModel
-import com.example.phonesapp1212.presentation.viewmodel.RoomViewModel
-import com.example.phonesapp1212.presentation.viewmodel.RoomViewModelFactory
 import com.example.phonesapp1212.presentation.viewmodel.SplashViewModel
 import com.example.phonesapp1212.repository.IClickable
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
 
 
 class MainActivity : AppCompatActivity(), IClickable {
@@ -59,6 +52,26 @@ class MainActivity : AppCompatActivity(), IClickable {
         }
     }
 
+
+    override fun onClickListener(key: String, item: String) {
+
+        when (key) {
+            id -> {
+                startActivity(
+                    Intent(this@MainActivity, CatDetailActivity::class.java).apply {
+                    putExtra(key, item)
+                })
+            }
+
+            breed -> {
+                startActivity(
+                    Intent(this@MainActivity, FavoriteActivity::class.java).apply {
+                    putExtra(key, item)
+                })
+            }
+        }
+    }
+
     private fun startSplash() {
         //splash screen waiting for result
         val content: View = findViewById(android.R.id.content)
@@ -75,11 +88,5 @@ class MainActivity : AppCompatActivity(), IClickable {
                 }
             }
         )
-    }
-
-    override fun onClickListener(id: String) {
-        val intent = Intent(this@MainActivity, CatDetailActivity::class.java)
-        intent.putExtra("id", id)
-        startActivity(intent)
     }
 }
