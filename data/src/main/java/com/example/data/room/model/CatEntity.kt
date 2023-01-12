@@ -33,7 +33,7 @@ data class CatEntity(
         fun fromCatToCatEntity(cat: Cat): CatEntity {
 
             return CatEntity(
-                id = 0,
+                0,
                 title = cat.title,
                 description = cat.description,
                 image = cat.image
