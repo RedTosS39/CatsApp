@@ -1,9 +1,13 @@
 package com.example.phonesapp1212.presentation.view
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.room.database.AppDatabase
@@ -11,6 +15,7 @@ import com.example.data.room.model.CatEntity
 import com.example.data.room.repository.CatDatabaseRepositoryImp
 import com.example.phonesapp1212.R
 import com.example.phonesapp1212.constants.Constants.breed
+import com.example.phonesapp1212.constants.Constants.newFavoriteActivityRequestCode
 import com.example.phonesapp1212.presentation.adapters.FavoriteCatsAdapter
 import com.example.phonesapp1212.presentation.viewmodel.RoomViewModel
 import com.example.phonesapp1212.presentation.viewmodel.RoomViewModelFactory
@@ -23,11 +28,10 @@ class FavoriteActivity : AppCompatActivity() {
     private val database by lazy { AppDatabase.getDatabase(this, applicationScope) }
     private val repository by lazy { CatDatabaseRepositoryImp(database.catDao()) }
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter:FavoriteCatsAdapter
+    private lateinit var adapter: FavoriteCatsAdapter
     private val roomViewModel: RoomViewModel by viewModels {
         RoomViewModelFactory(repository)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,17 +39,31 @@ class FavoriteActivity : AppCompatActivity() {
         init()
 
         val item = intent.getStringExtra(breed)
-        roomViewModel.getAllCats.observe(this) { list ->
-            list?.forEach {
+        val catEntity = CatEntity(null, item.toString(), "Desc", "Url")
 
-                val catEntity = CatEntity(it.id, item.toString(),it.description, it.image)
-                Log.d("pokemon", "favorite catEntity:  $catEntity")
-                roomViewModel.insert(catEntity)
-                adapter.submitList(listOf(catEntity))
+        roomViewModel.insert(catEntity)
+        Log.d("pokemon", "favorite:  $catEntity")
+
+        roomViewModel.getAllCats.observe(this) {
+
+            it.let {
+                adapter.submitList(it)
             }
         }
+    }
 
-        roomViewModel.getAllCats
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == newFavoriteActivityRequestCode && resultCode == Activity.RESULT_OK) {
+            data?.getStringExtra(breed)?.let {
+                val catEntity = CatEntity(0, it.toString(), "description", "link")
+                roomViewModel.insert(catEntity)
+                Toast.makeText(applicationContext, "item has been added", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(applicationContext, "item hasn't been added", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun init() {

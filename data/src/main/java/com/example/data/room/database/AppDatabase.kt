@@ -11,29 +11,12 @@ import com.example.data.room.model.CatEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [CatEntity::class], version = 1)
+@Database(entities = [CatEntity::class], version = 2)
 
 abstract class AppDatabase : RoomDatabase() {
 
 
     abstract fun catDao(): CatDao
-
-    private class CatDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
-
-        override fun onCreate(db: SupportSQLiteDatabase) {
-            super.onCreate(db)
-            INSTANCE?.let { database ->
-                scope.launch {
-
-                    val catDao = database.catDao()
-                    catDao.deleteById("title")
-                    val cat = CatEntity(0, "Cat", "Description", "image 1")
-                    catDao.insert(cat)
-
-                }
-            }
-        }
-    }
 
     companion object {
         private const val DATABASE_NAME = "Cats_database"
@@ -49,7 +32,10 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     DATABASE_NAME
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    //.addCallback(CatDatabaseCallback(applicationScope))
+                    .build()
                 INSTANCE = instance
                 // return instance
                 instance
