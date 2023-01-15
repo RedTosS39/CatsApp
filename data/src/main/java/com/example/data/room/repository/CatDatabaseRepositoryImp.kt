@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 class CatDatabaseRepositoryImp(private val catDao: CatDao) : CatDatabaseRepository {
 
     //it will notify the observer when the data has changed
-    val allCats: Flow<List<CatEntity>> = catDao.getAll()
+    private val allCats: Flow<List<CatEntity>> = catDao.getAll()
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
@@ -20,7 +20,7 @@ class CatDatabaseRepositoryImp(private val catDao: CatDao) : CatDatabaseReposito
         return allCats
     }
 
-    override suspend fun deleteById(title: String) {
-        catDao.deleteById(title)
+    override suspend fun deleteById() {
+        catDao.deleteById()
     }
 }

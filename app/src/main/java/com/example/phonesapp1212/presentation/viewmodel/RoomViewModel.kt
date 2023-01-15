@@ -21,4 +21,10 @@ class RoomViewModel(private val catDatabaseRepository: CatDatabaseRepository) : 
             catDatabaseRepository.insert(catEntity)
         }
     }
+
+    fun delete() {
+        viewModelScope.launch {
+            catDatabaseRepository.deleteById()
+        }
+    }
 }

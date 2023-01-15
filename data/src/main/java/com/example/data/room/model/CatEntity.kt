@@ -8,7 +8,7 @@ import com.example.phonesapp1212.domain.model.Cat
 
 @Entity(
     tableName = "cat_table",
-    indices = [Index(value = ["title"])]
+    indices = [Index(value = ["title"], unique = true)]
 )
 data class CatEntity(
     @PrimaryKey(autoGenerate = true)
