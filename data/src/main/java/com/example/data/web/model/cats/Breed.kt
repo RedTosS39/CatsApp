@@ -1,5 +1,7 @@
 package com.example.data.web.model.cats
 
+import com.google.gson.annotations.Expose
+
 //@Parcelize
 data class Breed(
     val adaptability: Int,
@@ -38,5 +40,5 @@ data class Breed(
     val vetstreet_url: String,
     val vocalisation: Int,
     val weight: Weight,
-    val wikipedia_url: String
+    val wikipedia_url: String,
 ) //: Parcelable

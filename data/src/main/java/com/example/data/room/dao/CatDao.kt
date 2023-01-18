@@ -1,6 +1,7 @@
 package com.example.data.room.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.*
 import androidx.room.Query
@@ -18,4 +19,7 @@ interface CatDao {
 
     @Query("DELETE FROM cat_table")
     suspend fun deleteById()
+
+    @Query("DELETE FROM cat_table WHERE title = :title")
+    suspend fun deleteItem(title: String)
 }
