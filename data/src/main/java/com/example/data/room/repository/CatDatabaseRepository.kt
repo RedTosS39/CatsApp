@@ -10,4 +10,6 @@ interface CatDatabaseRepository {
     fun getAll() : Flow<List<CatEntity>>
 
     suspend fun deleteById()
+
+    suspend fun deleteItem(title: String)
 }

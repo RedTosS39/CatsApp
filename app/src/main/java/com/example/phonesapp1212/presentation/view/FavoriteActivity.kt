@@ -15,6 +15,7 @@ import com.example.data.room.model.CatEntity
 import com.example.data.room.repository.CatDatabaseRepositoryImp
 import com.example.phonesapp1212.R
 import com.example.phonesapp1212.constants.Constants.breed
+import com.example.phonesapp1212.constants.Constants.deleteBreed
 import com.example.phonesapp1212.constants.Constants.newFavoriteActivityRequestCode
 import com.example.phonesapp1212.presentation.adapters.FavoriteCatsAdapter
 import com.example.phonesapp1212.presentation.viewmodel.RoomViewModel
@@ -23,12 +24,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 
 class FavoriteActivity : AppCompatActivity() {
-
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: FavoriteCatsAdapter
     private val applicationScope = CoroutineScope(SupervisorJob())
     private val database by lazy { AppDatabase.getDatabase(this, applicationScope) }
     private val repository by lazy { CatDatabaseRepositoryImp(database.catDao()) }
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: FavoriteCatsAdapter
     private val roomViewModel: RoomViewModel by viewModels {
         RoomViewModelFactory(repository)
     }
@@ -38,33 +38,53 @@ class FavoriteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_favorite)
         init()
 
-        val item = intent.getStringExtra(breed)
-        val catEntity = CatEntity(null, item.toString(), "Desc", "Url")
+        //roomViewModel.delete()
 
-        roomViewModel.insert(catEntity)
-        Log.d("pokemon", "favorite:  $catEntity")
+        val item = intent.getStringExtra(breed)
+        val deleteItem = intent.getStringExtra(deleteBreed)
+
+        if(item != null) {
+            val catEntity = CatEntity(null, item, "Desc", "Url")
+            roomViewModel.insert(catEntity)
+        } else if(deleteItem != null) {
+            roomViewModel.deleteItem(deleteItem)
+        } else {
+            roomViewModel.getAllCats
+        }
+
+
 
         roomViewModel.getAllCats.observe(this) {
-
             it.let {
                 adapter.submitList(it)
             }
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    private fun getKey(key: String) {
+        when(key) {
+            breed -> {
 
-        if (requestCode == newFavoriteActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            data?.getStringExtra(breed)?.let {
-                val catEntity = CatEntity(0, it.toString(), "description", "link")
-                roomViewModel.insert(catEntity)
-                Toast.makeText(applicationContext, "item has been added", Toast.LENGTH_SHORT).show()
             }
-        } else {
-            Toast.makeText(applicationContext, "item hasn't been added", Toast.LENGTH_SHORT).show()
+            deleteBreed -> {
+
+            }
         }
     }
+
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        if (requestCode == newFavoriteActivityRequestCode && resultCode == Activity.RESULT_OK) {
+//            data?.getStringExtra(breed)?.let {
+//                val catEntity = CatEntity(0, it, "description", "link")
+//                roomViewModel.insert(catEntity)
+//                Toast.makeText(applicationContext, "item has been added", Toast.LENGTH_SHORT).show()
+//            }
+//        } else {
+//            Toast.makeText(applicationContext, "item hasn't been added", Toast.LENGTH_SHORT).show()
+//        }
+//    }
 
     private fun init() {
         adapter = FavoriteCatsAdapter()
