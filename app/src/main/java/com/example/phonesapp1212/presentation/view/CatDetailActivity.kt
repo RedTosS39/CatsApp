@@ -8,7 +8,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.data.web.model.cats.BreedModel
 import com.example.data.web.model.cats.CatBreedDetails
 import com.example.phonesapp1212.R
-import com.example.phonesapp1212.constants.Constants.id
+import com.example.phonesapp1212.constants.Constants.ID
 import com.example.phonesapp1212.presentation.adapters.ViewPagerAdapter
 import com.example.phonesapp1212.presentation.viewmodel.CatDetailViewModel
 import com.example.phonesapp1212.presentation.viewmodel.CurrentCatViewModel
@@ -26,7 +26,7 @@ class CatDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cat_detail)
 
-        val id = intent.getStringExtra(id)
+        val id = intent.getStringExtra(ID)
         viewModel.getCatInfo(id!!)
         initViews()
         getResult()

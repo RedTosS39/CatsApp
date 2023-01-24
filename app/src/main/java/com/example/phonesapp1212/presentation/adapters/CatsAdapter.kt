@@ -1,95 +1,90 @@
 package com.example.phonesapp1212.presentation.adapters
 
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.web.model.cats.Breed
 import com.example.phonesapp1212.R
-import com.example.phonesapp1212.constants.Constants.breed
-import com.example.phonesapp1212.constants.Constants.deleteBreed
-import com.example.phonesapp1212.constants.Constants.id
-import com.example.phonesapp1212.constants.Constants.showList
+import com.example.phonesapp1212.constants.Constants.ADD_TO_FAVORITE
+import com.example.phonesapp1212.constants.Constants.ID
+import com.example.phonesapp1212.constants.Constants.SHOW_SAVED
 import com.example.phonesapp1212.databinding.ItemListCardviewBinding
 import com.example.phonesapp1212.repository.IClickable
 import com.squareup.picasso.Picasso
 
 class CatsAdapter(
-    mList: List<Breed>,
-    private val clickable: IClickable,
-    private val favoriteList: Map<String, Boolean>?
-) : RecyclerView.Adapter<CatsAdapter.MovieHolder>() {
+    private val iClickable: IClickable
+) : ListAdapter<Breed, CatsAdapter.MovieHolder>(ItemCallback), View.OnClickListener {
 
-    private val list: MutableList<Breed> = mList as MutableList<Breed>
+    //private val list: MutableList<Breed> = mList as MutableList<Breed>
+
+    override fun onClick(v: View?) {
+        val breed = v?.tag as Breed
+        when (v.id) {
+            R.id.favoriteImage -> iClickable.onClickListener(ADD_TO_FAVORITE, breed.name)
+            R.id.deleteImage -> iClickable.onClickListener(SHOW_SAVED, "showAll")
+            else -> iClickable.onClickListener(ID, breed.reference_image_id)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_list_cardview, parent, false)
-        return MovieHolder(view)
+        val view = LayoutInflater.from(parent.context)
+        val binding = ItemListCardviewBinding.inflate(view, parent, false)
+
+        binding.apply {
+            favoriteImage.setOnClickListener(this@CatsAdapter)
+            deleteImage.setOnClickListener(this@CatsAdapter)
+            root.setOnClickListener(this@CatsAdapter)
+        }
+
+        return MovieHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
-        holder.bind(list[position], clickable, favoriteList)
-    }
+        //get current element on list
+        val breed = getItem(position)
 
-    override fun getItemCount(): Int {
-        return list.size
-    }
+        with(holder.binding) {
+            root.tag = breed
+            favoriteImage.tag = breed
+            deleteImage.tag = breed
+            catDetailsImageIV.tag = breed
 
-    inner class MovieHolder(view: View) : RecyclerView.ViewHolder(view) {
+            favoriteImage.setImageResource(
+                if (breed.isFavorite) {
+                    R.drawable.ic_baseline_favorite_24_added
+                } else {
+                    R.drawable.ic_baseline_favorite_border_24
+                }
+            )
 
-        private val binding = ItemListCardviewBinding.bind(view)
-
-        fun bind(item: Breed?, clickable: IClickable, favorite: Map<String, Boolean>?) = with(binding) {
-
-            if (favorite?.containsKey(item?.name) == true)  {
-                favoriteImage.setImageResource(R.drawable.ic_baseline_favorite_24_added)
-            } else {
-                favoriteImage.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-            }
-
-            catDetailsBreedTV.text = item?.name
+            catDetailsBreedTV.text = breed?.name
             Picasso.get()
-                .load("https://cdn2.thecatapi.com/images/" + item?.reference_image_id + ".jpg")
+                .load("https://cdn2.thecatapi.com/images/" + breed?.reference_image_id + ".jpg")
                 .into(catDetailsImageIV)
 
-            favoriteImage.setOnClickListener {
-
-                if(favoriteImage.id == R.drawable.ic_baseline_favorite_24_added ) {
-                    favoriteImage.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-
-                    item?.name?.let {
-                        clickable.onClickListener(deleteBreed, it)
-                    }
-
-                } else {
-                    item?.name?.let {
-                        clickable.onClickListener(breed, it)
-                    }
-                    favoriteImage.setImageResource(R.drawable.ic_baseline_favorite_24_added)
-                }
-            }
-
-            deleteImage.setOnClickListener {
-                clickable.onClickListener(showList, "showAll")
-            }
         }
 
-        init {
-            //tap on current item and send image id
-            view.setOnClickListener {
-                list[absoluteAdapterPosition].reference_image_id.let {
-                    try {
-                        clickable.onClickListener(id, it)
-                    } catch (e: Exception) {
-                        e.toString()
-                    }
-                    Log.d("pokemon", ":clicked ${list[absoluteAdapterPosition]} ")
-                }
-            }
+    }
+
+    inner class MovieHolder(val binding: ItemListCardviewBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        //fun bind(item: Breed?, clickable: IClickable, favorite: Map<String, Boolean>?) =
+    }
+
+    object ItemCallback : DiffUtil.ItemCallback<Breed>() {
+        override fun areItemsTheSame(oldItem: Breed, newItem: Breed): Boolean {
+            return oldItem.id == newItem.id
         }
+
+        override fun areContentsTheSame(oldItem: Breed, newItem: Breed): Boolean {
+            return oldItem == newItem
+        }
+
     }
 }
 
