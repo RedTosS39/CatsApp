@@ -21,13 +21,13 @@ data class CatEntity(
     val image: String
 ) {
 
-    fun toCat(catEntity: CatEntity): Cat {
-        return Cat(
-            title = title,
-            description = description,
-            image = image
-        )
-    }
+//    fun toCat(catEntity: CatEntity): Cat {
+//        return Cat(
+//            title = title,
+//            description = description,
+//            image = image
+//        )
+//    }
 
     companion object {
         fun fromCatToCatEntity(cat: Cat): CatEntity {

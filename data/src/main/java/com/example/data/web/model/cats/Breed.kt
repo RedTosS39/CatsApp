@@ -41,4 +41,5 @@ data class Breed(
     val vocalisation: Int,
     val weight: Weight,
     val wikipedia_url: String,
+    val isFavorite: Boolean
 ) //: Parcelable
