@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 class RoomViewModel(private val catDatabaseRepository: CatDatabaseRepository) : ViewModel() {
 
     val getAllCats: LiveData<List<CatEntity>> = catDatabaseRepository.getAll().asLiveData()
-    //val getMap: LiveData<Map<String, Boolean>> = catDatabaseRepository.getAll().asLiveData()
 
     fun insert(catEntity: CatEntity) {
 

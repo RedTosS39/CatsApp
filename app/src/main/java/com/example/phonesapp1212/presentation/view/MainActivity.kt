@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,24 +30,25 @@ import kotlinx.coroutines.SupervisorJob
 
 
 class MainActivity : AppCompatActivity(), IClickable {
-    private val applicationScope = CoroutineScope(SupervisorJob())
-    private val database by lazy { AppDatabase.getDatabase(this, applicationScope) }
-    private val repository by lazy { CatDatabaseRepositoryImp(database.catDao()) }
-    private val roomViewModel: RoomViewModel by viewModels {
-        RoomViewModelFactory(repository)
-    }
+//    private val applicationScope = CoroutineScope(SupervisorJob())
+//    private val database by lazy { AppDatabase.getDatabase(this, applicationScope) }
+//    private val repository by lazy { CatDatabaseRepositoryImp(database.catDao()) }
+//    private val roomViewModel: RoomViewModel by viewModels {
+//        RoomViewModelFactory(repository)
+//    }
 
     private val splashViewModel: SplashViewModel by viewModels()
     private val mainViewModule: MainViewModel by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
     private lateinit var catsAdapter: CatsAdapter
     private lateinit var recyclerView: RecyclerView
-
+    private lateinit var progressBar: ProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         supportActionBar?.hide()
         setContentView(R.layout.activity_main)
         startSplash()
+        progressBar = findViewById(R.id.progress_circular)
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -73,6 +76,9 @@ class MainActivity : AppCompatActivity(), IClickable {
                     catsAdapter = CatsAdapter(this@MainActivity)
                     catsAdapter.submitList(it)
                     recyclerView.adapter = catsAdapter
+
+                    recyclerView.isVisible = true
+                    progressBar.isVisible
                 }
             }
         }
@@ -108,7 +114,7 @@ class MainActivity : AppCompatActivity(), IClickable {
 
             DELETE_FROM_FAVORITE -> {
                 startActivity(Intent(this@MainActivity, FavoriteActivity::class.java).apply {
-                    putExtra(key, "delete")
+                    putExtra(key, item)
                 })
             }
         }

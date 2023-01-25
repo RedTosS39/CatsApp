@@ -12,9 +12,9 @@ class CatDatabaseRepositoryImp(private val catDao: CatDao) : CatDatabaseReposito
     //it will notify the observer when the data has changed
     private val allCats: Flow<List<CatEntity>> = catDao.getAll()
 
-    fun getCat(catEntity: CatEntity) : Cat{
-        return catEntity.toCat(catEntity)
-    }
+//    fun getCat(catEntity: CatEntity) : Cat{
+//        return catEntity.toCat(catEntity)
+//    }
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread

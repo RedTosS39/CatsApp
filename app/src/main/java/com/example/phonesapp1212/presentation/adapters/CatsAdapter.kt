@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.web.model.cats.Breed
 import com.example.phonesapp1212.R
+import com.example.phonesapp1212.constants.Constants
 import com.example.phonesapp1212.constants.Constants.ADD_TO_FAVORITE
+import com.example.phonesapp1212.constants.Constants.DELETE_FROM_FAVORITE
 import com.example.phonesapp1212.constants.Constants.ID
 import com.example.phonesapp1212.constants.Constants.SHOW_SAVED
 import com.example.phonesapp1212.databinding.ItemListCardviewBinding
@@ -26,7 +28,7 @@ class CatsAdapter(
         val breed = v?.tag as Breed
         when (v.id) {
             R.id.favoriteImage -> iClickable.onClickListener(ADD_TO_FAVORITE, breed.name)
-            R.id.deleteImage -> iClickable.onClickListener(SHOW_SAVED, "showAll")
+            R.id.deleteImage -> iClickable.onClickListener(DELETE_FROM_FAVORITE, breed.name)
             else -> iClickable.onClickListener(ID, breed.reference_image_id)
         }
     }

@@ -9,8 +9,10 @@ import com.example.data.room.database.AppDatabase
 import com.example.data.room.model.CatEntity
 import com.example.data.room.repository.CatDatabaseRepositoryImp
 import com.example.phonesapp1212.R
+import com.example.phonesapp1212.constants.Constants
 import com.example.phonesapp1212.constants.Constants.ADD_TO_FAVORITE
 import com.example.phonesapp1212.constants.Constants.DELETE_FROM_FAVORITE
+import com.example.phonesapp1212.constants.Constants.SHOW_SAVED
 import com.example.phonesapp1212.presentation.adapters.FavoriteCatsAdapter
 import com.example.phonesapp1212.presentation.viewmodel.RoomViewModel
 import com.example.phonesapp1212.presentation.viewmodel.RoomViewModelFactory
@@ -33,18 +35,23 @@ class FavoriteActivity : AppCompatActivity() {
         init()
 
         //roomViewModel.delete()
-
         val item1 = intent.getStringExtra(ADD_TO_FAVORITE)
         val deleteItem = intent.getStringExtra(DELETE_FROM_FAVORITE)
+        val showSaved = intent.getStringExtra(SHOW_SAVED)
 
         if(item1 != null) {
             val catEntity = CatEntity(null, item1, "Desc", "Url")
             roomViewModel.insert(catEntity)
-        } else if(deleteItem != null) {
+        }
+
+        if(deleteItem != null) {
             roomViewModel.deleteItem(deleteItem)
-        } else {
+        }
+
+        if(showSaved != null) {
             roomViewModel.getAllCats
         }
+
 
         roomViewModel.getAllCats.observe(this) {
             it.let {

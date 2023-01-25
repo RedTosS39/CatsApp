@@ -17,8 +17,8 @@ class CatDetailViewModel : ViewModel() {
 
     //insert di next
     private val catBreedRepository: CatBreedRepository = CatBreedRepositoryImpl()
-    private val mMutableLiveData = MutableLiveData<CatBreedDetails>()
-    val liveData: LiveData<CatBreedDetails> = mMutableLiveData
+    private val _mMutableLiveData = MutableLiveData<CatBreedDetails>()
+    val liveData: LiveData<CatBreedDetails> = _mMutableLiveData
 
     fun getCatInfo(id: String) {
         viewModelScope.launch {
@@ -29,8 +29,7 @@ class CatDetailViewModel : ViewModel() {
                     if (response.body() != null) {
                         Log.d("pokemon", "onResponse: ${response.body()}")
 
-                        mMutableLiveData.postValue(response.body())
-                        val breedId = response.body()!!.id
+                        _mMutableLiveData.postValue(response.body())
                     }
                 }
 
