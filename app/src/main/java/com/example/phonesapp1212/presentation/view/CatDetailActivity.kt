@@ -58,13 +58,11 @@ class CatDetailActivity : AppCompatActivity() {
             catBreedDetailsTitle.text = it.name
             catDetailsTV.text = it.description
         }
-
-        //Picasso.get().load(catBreedDetails.url).into(catImageDetails)
     }
 
-    private fun getBreedModel(breedModel: BreedModel) {
+    private fun getBreedModel(catBreedDetails: List<CatBreedDetails>) {
 
-        val adapter = ViewPagerAdapter(breedModel)
+        val adapter = ViewPagerAdapter(catBreedDetails)
         viewPager2.adapter = adapter
     }
 

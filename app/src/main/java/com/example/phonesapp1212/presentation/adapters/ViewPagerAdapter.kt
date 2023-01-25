@@ -8,11 +8,12 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.data.web.model.cats.BreedModel
+import com.example.data.web.model.cats.CatBreedDetails
 import com.example.phonesapp1212.R
 import com.squareup.picasso.Picasso
 
 
-class ViewPagerAdapter(private val list: BreedModel)
+class ViewPagerAdapter(private val list: List<CatBreedDetails>)
     : RecyclerView.Adapter<ViewPagerAdapter.ViewPagerHolder>() {
 
     inner class ViewPagerHolder(view: View) : RecyclerView.ViewHolder(view) {

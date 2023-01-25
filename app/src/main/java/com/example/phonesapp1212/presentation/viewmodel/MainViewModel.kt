@@ -21,20 +21,21 @@ class MainViewModel: ViewModel() {
     private val _catList = MutableLiveData<List<Breed>>()
     val catList: LiveData<List<Breed>> = _catList
 
+    //get list of cats
      fun getCatsResponse()  {
          viewModelScope.launch(Dispatchers.IO) {
              val response = catListRepository.getCatList()
              response.enqueue(object : Callback<List<Breed>> {
                  override fun onResponse(call: Call<List<Breed>>, response: Response<List<Breed>>) {
                      if (response.body() != null) {
-                         Log.d("pokemon", "onResponse: ${response.body()!![0].reference_image_id}")
+//                         Log.d("pokemon", "onResponse: ${response.body()!![0].reference_image_id}")
 
                          _catList.postValue(response.body())
                      }
                  }
 
                  override fun onFailure(call: Call<List<Breed>>, t: Throwable) {
-                     Log.d("pokemon", "onFailure ${t.toString()}")
+                     Log.d("pokemon", "onFailure $t")
                  }
              })
          }
