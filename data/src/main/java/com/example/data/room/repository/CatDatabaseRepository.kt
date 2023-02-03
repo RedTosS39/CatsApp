@@ -12,4 +12,6 @@ interface CatDatabaseRepository {
     suspend fun deleteById()
 
     suspend fun deleteItem(title: String)
+
+    suspend fun findItemByTitle(title: String) : Boolean
 }

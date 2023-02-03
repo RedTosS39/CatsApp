@@ -31,4 +31,10 @@ class RoomViewModel(private val catDatabaseRepository: CatDatabaseRepository) : 
             catDatabaseRepository.deleteItem(title)
         }
     }
+
+    fun findItemByTitle(title: String) {
+        viewModelScope.launch {
+            catDatabaseRepository.findItemByTitle(title)
+        }
+    }
 }

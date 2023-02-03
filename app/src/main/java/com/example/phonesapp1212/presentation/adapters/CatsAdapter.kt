@@ -1,6 +1,7 @@
 package com.example.phonesapp1212.presentation.adapters
 
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,6 +60,7 @@ class CatsAdapter(
             favoriteImage.setImageResource(
                 if (breed.isFavorite) {
                     R.drawable.ic_baseline_favorite_24_added
+                    Log.d("pokemon", "onBindViewHolder: ${breed.isFavorite}")
                 } else {
                     R.drawable.ic_baseline_favorite_border_24
                 }

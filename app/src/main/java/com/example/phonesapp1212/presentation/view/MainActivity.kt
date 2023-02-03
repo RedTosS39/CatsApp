@@ -2,6 +2,7 @@ package com.example.phonesapp1212.presentation.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.ProgressBar
@@ -14,19 +15,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.room.database.AppDatabase
 import com.example.data.room.repository.CatDatabaseRepositoryImp
+import com.example.data.web.repository.CatListRepository
+import com.example.data.web.repository.CatListRepositoryImpl
 import com.example.phonesapp1212.R
 import com.example.phonesapp1212.constants.Constants.ADD_TO_FAVORITE
 import com.example.phonesapp1212.constants.Constants.DELETE_FROM_FAVORITE
 import com.example.phonesapp1212.constants.Constants.ID
 import com.example.phonesapp1212.constants.Constants.SHOW_SAVED
 import com.example.phonesapp1212.presentation.adapters.CatsAdapter
-import com.example.phonesapp1212.presentation.viewmodel.MainViewModel
-import com.example.phonesapp1212.presentation.viewmodel.RoomViewModel
-import com.example.phonesapp1212.presentation.viewmodel.RoomViewModelFactory
-import com.example.phonesapp1212.presentation.viewmodel.SplashViewModel
+import com.example.phonesapp1212.presentation.viewmodel.*
 import com.example.phonesapp1212.repository.IClickable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.coroutineScope
 
 
 class MainActivity : AppCompatActivity(), IClickable {
@@ -38,10 +39,19 @@ class MainActivity : AppCompatActivity(), IClickable {
 //    }
 
     private val splashViewModel: SplashViewModel by viewModels()
-    private val mainViewModule: MainViewModel by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
+   // private val mainViewModule: MainViewModel by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
+
+    private val catListRepository : CatListRepository = CatListRepositoryImpl()
+    private val applicationScope = CoroutineScope(SupervisorJob())
+    private val database by lazy { AppDatabase.getDatabase(this, applicationScope) }
+    private val repository by lazy { CatDatabaseRepositoryImp(database.catDao()) }
+    private val testViewModel: TestViewModel by viewModels { TestViewModelFactory(repository, catListRepository) }
+
+
     private lateinit var catsAdapter: CatsAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
@@ -53,24 +63,16 @@ class MainActivity : AppCompatActivity(), IClickable {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         initCatListFromApi()
-        mainViewModule.getCatsResponse()
+
+       // mainViewModule.getCatsResponse()
+        testViewModel.getFinalList()
+
 
     }
 
-//    private fun getDatabaseStatus() : Map<String, Boolean> {
-//
-//        val title = mutableMapOf<String, Boolean>()
-//        roomViewModel.getAllCats.observe(this) {
-//            for(i in it) {
-//                title[i.title] = true
-//                Log.d("pokemon", "getDatabaseStatus: ${i.title} ")
-//            }
-//        }
-//        return title
-//    }
-
     private fun initCatListFromApi() {
-        mainViewModule.apply {
+        // mainViewModule.apply {
+        testViewModel.apply {
             catList.observe(this@MainActivity) {
                 it?.let {
                     catsAdapter = CatsAdapter(this@MainActivity)
