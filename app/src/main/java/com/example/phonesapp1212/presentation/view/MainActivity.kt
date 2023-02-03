@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity(), IClickable {
         testViewModel.apply {
             catList.observe(this@MainActivity) {
                 it?.let {
+
                     catsAdapter = CatsAdapter(this@MainActivity)
                     catsAdapter.submitList(it)
                     recyclerView.adapter = catsAdapter
