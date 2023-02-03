@@ -9,7 +9,6 @@ import com.example.data.room.database.AppDatabase
 import com.example.data.room.model.CatEntity
 import com.example.data.room.repository.CatDatabaseRepositoryImp
 import com.example.phonesapp1212.R
-import com.example.phonesapp1212.constants.Constants
 import com.example.phonesapp1212.constants.Constants.ADD_TO_FAVORITE
 import com.example.phonesapp1212.constants.Constants.DELETE_FROM_FAVORITE
 import com.example.phonesapp1212.constants.Constants.SHOW_SAVED
