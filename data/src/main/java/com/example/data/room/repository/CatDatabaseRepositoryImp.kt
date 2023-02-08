@@ -32,5 +32,6 @@ class CatDatabaseRepositoryImp(private val catDao: CatDao) : CatDatabaseReposito
 
     override suspend fun findItemByTitle(title: String) : Boolean {
         return catDao.findItemByTitle(title)
+
     }
 }
