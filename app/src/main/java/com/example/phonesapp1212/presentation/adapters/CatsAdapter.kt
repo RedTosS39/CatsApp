@@ -10,20 +10,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.web.model.cats.Breed
 import com.example.phonesapp1212.R
-import com.example.phonesapp1212.constants.Constants
 import com.example.phonesapp1212.constants.Constants.ADD_TO_FAVORITE
 import com.example.phonesapp1212.constants.Constants.DELETE_FROM_FAVORITE
 import com.example.phonesapp1212.constants.Constants.ID
-import com.example.phonesapp1212.constants.Constants.SHOW_SAVED
 import com.example.phonesapp1212.databinding.ItemListCardviewBinding
 import com.example.phonesapp1212.repository.IClickable
 import com.squareup.picasso.Picasso
 
 class CatsAdapter(
     private val iClickable: IClickable
-) : ListAdapter<Breed, CatsAdapter.MovieHolder>(ItemCallback), View.OnClickListener {
-
-    //private val list: MutableList<Breed> = mList as MutableList<Breed>
+) : ListAdapter<Breed, CatsAdapter.CatHolder>(ItemCallback), View.OnClickListener {
 
     override fun onClick(v: View?) {
         val breed = v?.tag as Breed
@@ -31,12 +27,13 @@ class CatsAdapter(
             R.id.favoriteImage -> iClickable.onClickListener(ADD_TO_FAVORITE, breed.name)
             R.id.deleteImage -> iClickable.onClickListener(DELETE_FROM_FAVORITE, breed.name)
             else -> iClickable.onClickListener(ID, breed.reference_image_id)
+
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
-        val view = LayoutInflater.from(parent.context)
-        val binding = ItemListCardviewBinding.inflate(view, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ItemListCardviewBinding.inflate(inflater, parent, false)
 
         binding.apply {
             favoriteImage.setOnClickListener(this@CatsAdapter)
@@ -44,51 +41,50 @@ class CatsAdapter(
             root.setOnClickListener(this@CatsAdapter)
         }
 
-        return MovieHolder(binding)
+        return CatHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: MovieHolder, position: Int) {
-        //get current element on list
-        val breed = getItem(position)
+    //set data by positions
+    override fun onBindViewHolder(holder: CatHolder, position: Int) {
+
+        val currentItem = getItem(position)
 
         with(holder.binding) {
-            root.tag = breed
-            favoriteImage.tag = breed
-            deleteImage.tag = breed
-            catDetailsImageIV.tag = breed
 
-            favoriteImage.setImageResource(
-                if (breed.isFavorite) {
-                    R.drawable.ic_baseline_favorite_24_added
-                    Log.d("pokemon", "onBindViewHolder: ${breed.isFavorite}")
-                } else {
-                    R.drawable.ic_baseline_favorite_border_24
-                }
+
+            root.tag = currentItem
+            favoriteImage.tag = currentItem
+            deleteImage.tag = currentItem
+            catDetailsImageIV.tag = currentItem
+
+            if (currentItem.isFavorite) {
+                favoriteImage.setImageResource(R.drawable.ic_baseline_favorite_24_added)
+            } else {
+                favoriteImage.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            }
+
+            Log.d(
+                "pokemon",
+                "Name: ${getItem(position).name}, is it Favorite? ${currentItem.isFavorite} "
             )
 
-            catDetailsBreedTV.text = breed?.name
+            catDetailsBreedTV.text = getItem(position)?.name
             Picasso.get()
-                .load("https://cdn2.thecatapi.com/images/" + breed?.reference_image_id + ".jpg")
+                .load("https://cdn2.thecatapi.com/images/" + currentItem?.reference_image_id + ".jpg")
                 .into(catDetailsImageIV)
-
         }
-
     }
 
-    inner class MovieHolder(val binding: ItemListCardviewBinding) : RecyclerView.ViewHolder(binding.root) {
-
-        //fun bind(item: Breed?, clickable: IClickable, favorite: Map<String, Boolean>?) =
-    }
+    class CatHolder(val binding: ItemListCardviewBinding) : RecyclerView.ViewHolder(binding.root)
 
     object ItemCallback : DiffUtil.ItemCallback<Breed>() {
         override fun areItemsTheSame(oldItem: Breed, newItem: Breed): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.isFavorite == newItem.isFavorite
         }
 
         override fun areContentsTheSame(oldItem: Breed, newItem: Breed): Boolean {
             return oldItem == newItem
         }
-
     }
 }
 

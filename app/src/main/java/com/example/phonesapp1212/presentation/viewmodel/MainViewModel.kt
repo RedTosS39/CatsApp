@@ -8,8 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.web.model.cats.Breed
 import com.example.data.web.repository.CatListRepository
 import com.example.data.web.repository.CatListRepositoryImpl
-import com.example.data.web.repository.CatRepositoryImpl
-import com.example.phonesapp1212.domain.repository.CatRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call

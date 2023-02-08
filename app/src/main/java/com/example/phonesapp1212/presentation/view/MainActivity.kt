@@ -39,14 +39,18 @@ class MainActivity : AppCompatActivity(), IClickable {
 //    }
 
     private val splashViewModel: SplashViewModel by viewModels()
-   // private val mainViewModule: MainViewModel by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
+    // private val mainViewModule: MainViewModel by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
 
-    private val catListRepository : CatListRepository = CatListRepositoryImpl()
+    private val catListRepository: CatListRepository = CatListRepositoryImpl()
     private val applicationScope = CoroutineScope(SupervisorJob())
     private val database by lazy { AppDatabase.getDatabase(this, applicationScope) }
     private val repository by lazy { CatDatabaseRepositoryImp(database.catDao()) }
-    private val testViewModel: TestViewModel by viewModels { TestViewModelFactory(repository, catListRepository) }
-
+    private val testViewModel: TestViewModel by viewModels {
+        TestViewModelFactory(
+            repository,
+            catListRepository
+        )
+    }
 
     private lateinit var catsAdapter: CatsAdapter
     private lateinit var recyclerView: RecyclerView
@@ -61,13 +65,11 @@ class MainActivity : AppCompatActivity(), IClickable {
         progressBar = findViewById(R.id.progress_circular)
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
+        catsAdapter = CatsAdapter(this@MainActivity)
+        recyclerView.adapter = catsAdapter
         initCatListFromApi()
 
-       // mainViewModule.getCatsResponse()
-        testViewModel.getFinalList()
-
-
+        testViewModel.getCatResponse()
     }
 
     private fun initCatListFromApi() {
@@ -75,16 +77,12 @@ class MainActivity : AppCompatActivity(), IClickable {
         testViewModel.apply {
             catList.observe(this@MainActivity) {
                 it?.let {
-
-                    catsAdapter = CatsAdapter(this@MainActivity)
                     catsAdapter.submitList(it)
-                    recyclerView.adapter = catsAdapter
-
-                    recyclerView.isVisible = true
-                    progressBar.isVisible
                 }
             }
         }
+        recyclerView.isVisible = true
+        progressBar.isVisible
     }
 
     //get key from clicked item in adapter
@@ -96,32 +94,42 @@ class MainActivity : AppCompatActivity(), IClickable {
             ID -> {
                 startActivity(
                     Intent(this@MainActivity, CatDetailActivity::class.java).apply {
-                    putExtra(key, item)
-                })
-            }
-
-            //to database
-            ADD_TO_FAVORITE -> {
-                startActivity(
-                    Intent(this@MainActivity, FavoriteActivity::class.java).apply {
-                    putExtra(key, item)
-                })
-            }
-
-            SHOW_SAVED -> {
-                startActivity(
-                    Intent(this@MainActivity, FavoriteActivity::class.java).apply {
-                        putExtra(key, "0")
+                        putExtra(key, item)
                     })
             }
 
+            ADD_TO_FAVORITE -> {
+                testViewModel.addToFavorite(item)
+            }
+
+            SHOW_SAVED -> {
+                startActivity(Intent(this@MainActivity, FavoriteActivity::class.java).apply {
+                    putExtra(key, "0")
+                })
+            }
+
             DELETE_FROM_FAVORITE -> {
+                testViewModel.deleteFromFavorite(item)
+                startActivity(Intent(this@MainActivity, FavoriteActivity::class.java))
+            }
+
+            /* ADD_TO_FAVORITE -> {
+                 startActivity(
+
+                     Intent(this@MainActivity, FavoriteActivity::class.java).apply {
+                     putExtra(key, item)
+                 })
+             }
+
+             DELETE_FROM_FAVORITE -> {
                 startActivity(Intent(this@MainActivity, FavoriteActivity::class.java).apply {
                     putExtra(key, item)
                 })
             }
+            */
         }
     }
+
     private fun startSplash() {
         //splash screen waiting for result
         val content: View = findViewById(android.R.id.content)

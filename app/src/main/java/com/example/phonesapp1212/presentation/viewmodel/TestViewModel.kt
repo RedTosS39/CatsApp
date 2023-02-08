@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.data.room.model.CatEntity
 import com.example.data.room.repository.CatDatabaseRepository
 import com.example.data.web.model.cats.Breed
 import com.example.data.web.repository.CatListRepository
@@ -22,15 +23,25 @@ class TestViewModel(
     private val _catList = MutableLiveData<List<Breed>>()
     val catList: LiveData<List<Breed>> = _catList
 
-    private fun getCatResponse()  {
+    fun getCatResponse() {
 
         viewModelScope.launch(Dispatchers.IO) {
             val response = catListRepository.getCatList()
+
             response.enqueue(object : Callback<List<Breed>> {
                 override fun onResponse(call: Call<List<Breed>>, response: Response<List<Breed>>) {
 
-                    response.body()?.apply {
-                        _catList.postValue(this)
+                    viewModelScope.launch {
+
+                        response.body()?.let { it ->
+                            it.filter {
+                                catDatabaseRepository.findItemByTitle(it.name)
+
+                            }.forEach {
+                                it.isFavorite = catDatabaseRepository.findItemByTitle(it.name)
+                            }
+                            _catList.postValue(it)
+                        }
                     }
                 }
 
@@ -41,14 +52,16 @@ class TestViewModel(
         }
     }
 
-    fun getFinalList() {
+    fun addToFavorite(item: String) {
+        val catEntity = CatEntity(null, item, "Desc", "Url")
         viewModelScope.launch {
-            getCatResponse()
-            _catList.value?.filter {
-                it.isFavorite
-            }?.forEach { it.isFavorite = catDatabaseRepository.findItemByTitle(it.name) }
+            catDatabaseRepository.insert(catEntity)
         }
+    }
 
-        Log.d("pokemon", "done: ")
+    fun deleteFromFavorite(item: String) {
+        viewModelScope.launch {
+            catDatabaseRepository.deleteItem(item)
+        }
     }
 }

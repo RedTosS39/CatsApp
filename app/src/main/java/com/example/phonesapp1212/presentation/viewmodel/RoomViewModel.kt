@@ -1,6 +1,5 @@
 package com.example.phonesapp1212.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -29,12 +28,6 @@ class RoomViewModel(private val catDatabaseRepository: CatDatabaseRepository) : 
     fun deleteItem(title: String) {
         viewModelScope.launch {
             catDatabaseRepository.deleteItem(title)
-        }
-    }
-
-    fun findItemByTitle(title: String) {
-        viewModelScope.launch {
-            catDatabaseRepository.findItemByTitle(title)
         }
     }
 }

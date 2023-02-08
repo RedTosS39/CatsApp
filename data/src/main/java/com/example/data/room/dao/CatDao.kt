@@ -23,6 +23,6 @@ interface CatDao {
     @Query("DELETE FROM cat_table WHERE title = :title")
     suspend fun deleteItem(title: String)
 
-    @Query("SELECT EXISTS (SELECT * FROM cat_table WHERE title = :title)")
+    @Query("SELECT EXISTS (SELECT (title) FROM cat_table WHERE title = :title)")
     suspend fun findItemByTitle(title: String) : Boolean
 }

@@ -34,11 +34,11 @@ class FavoriteActivity : AppCompatActivity() {
         init()
 
         //roomViewModel.delete()
-        val item1 = intent.getStringExtra(ADD_TO_FAVORITE)
-        val deleteItem = intent.getStringExtra(DELETE_FROM_FAVORITE)
+      //  val item1 = intent.getStringExtra(ADD_TO_FAVORITE)
+      //  val deleteItem = intent.getStringExtra(DELETE_FROM_FAVORITE)
         val showSaved = intent.getStringExtra(SHOW_SAVED)
 
-        if(item1 != null) {
+   /*     if(item1 != null) {
             val catEntity = CatEntity(null, item1, "Desc", "Url")
             roomViewModel.insert(catEntity)
         }
@@ -46,7 +46,7 @@ class FavoriteActivity : AppCompatActivity() {
         if(deleteItem != null) {
             roomViewModel.deleteItem(deleteItem)
         }
-
+*/
         if(showSaved != null) {
             roomViewModel.getAllCats
         }
