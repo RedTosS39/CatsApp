@@ -31,27 +31,11 @@ import kotlinx.coroutines.coroutineScope
 
 
 class MainActivity : AppCompatActivity(), IClickable {
-//    private val applicationScope = CoroutineScope(SupervisorJob())
-//    private val database by lazy { AppDatabase.getDatabase(this, applicationScope) }
-//    private val repository by lazy { CatDatabaseRepositoryImp(database.catDao()) }
-//    private val roomViewModel: RoomViewModel by viewModels {
-//        RoomViewModelFactory(repository)
-//    }
 
     private val splashViewModel: SplashViewModel by viewModels()
-    // private val mainViewModule: MainViewModel by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
-
-    private val catListRepository: CatListRepository = CatListRepositoryImpl()
     private val applicationScope = CoroutineScope(SupervisorJob())
     private val database by lazy { AppDatabase.getDatabase(this, applicationScope) }
-    private val repository by lazy { CatDatabaseRepositoryImp(database.catDao()) }
-    private val testViewModel: TestViewModel by viewModels {
-        TestViewModelFactory(
-            repository,
-            catListRepository
-        )
-    }
-
+    private val testViewModel: TestViewModel by viewModels { TestViewModelFactory(database.catDao()) }
     private lateinit var catsAdapter: CatsAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
@@ -62,22 +46,21 @@ class MainActivity : AppCompatActivity(), IClickable {
         supportActionBar?.hide()
         setContentView(R.layout.activity_main)
         startSplash()
+        testViewModel.getCatResponse()
         progressBar = findViewById(R.id.progress_circular)
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         catsAdapter = CatsAdapter(this@MainActivity)
-        recyclerView.adapter = catsAdapter
         initCatListFromApi()
-
-        testViewModel.getCatResponse()
     }
 
     private fun initCatListFromApi() {
         // mainViewModule.apply {
         testViewModel.apply {
             catList.observe(this@MainActivity) {
-                it?.let {
+                it?.apply {
                     catsAdapter.submitList(it)
+                    recyclerView.adapter = catsAdapter
                 }
             }
         }
@@ -87,7 +70,6 @@ class MainActivity : AppCompatActivity(), IClickable {
 
     //get key from clicked item in adapter
     override fun onClickListener(key: String, item: String) {
-
         //send item by key
         when (key) {
             //to details activity
@@ -98,9 +80,7 @@ class MainActivity : AppCompatActivity(), IClickable {
                     })
             }
 
-            ADD_TO_FAVORITE -> {
-                testViewModel.addToFavorite(item)
-            }
+            ADD_TO_FAVORITE -> { testViewModel.addToFavorite(item) }
 
             SHOW_SAVED -> {
                 startActivity(Intent(this@MainActivity, FavoriteActivity::class.java).apply {
@@ -112,21 +92,6 @@ class MainActivity : AppCompatActivity(), IClickable {
                 testViewModel.deleteFromFavorite(item)
                 startActivity(Intent(this@MainActivity, FavoriteActivity::class.java))
             }
-
-            /* ADD_TO_FAVORITE -> {
-                 startActivity(
-
-                     Intent(this@MainActivity, FavoriteActivity::class.java).apply {
-                     putExtra(key, item)
-                 })
-             }
-
-             DELETE_FROM_FAVORITE -> {
-                startActivity(Intent(this@MainActivity, FavoriteActivity::class.java).apply {
-                    putExtra(key, item)
-                })
-            }
-            */
         }
     }
 

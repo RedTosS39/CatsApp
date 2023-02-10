@@ -34,23 +34,10 @@ class FavoriteActivity : AppCompatActivity() {
         init()
 
         //roomViewModel.delete()
-      //  val item1 = intent.getStringExtra(ADD_TO_FAVORITE)
-      //  val deleteItem = intent.getStringExtra(DELETE_FROM_FAVORITE)
         val showSaved = intent.getStringExtra(SHOW_SAVED)
-
-   /*     if(item1 != null) {
-            val catEntity = CatEntity(null, item1, "Desc", "Url")
-            roomViewModel.insert(catEntity)
-        }
-
-        if(deleteItem != null) {
-            roomViewModel.deleteItem(deleteItem)
-        }
-*/
         if(showSaved != null) {
             roomViewModel.getAllCats
         }
-
 
         roomViewModel.getAllCats.observe(this) {
             it.let {
