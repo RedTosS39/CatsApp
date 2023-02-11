@@ -27,31 +27,24 @@ class CatsAdapter(
             R.id.favoriteImage -> iClickable.onClickListener(ADD_TO_FAVORITE, breed.name)
             R.id.deleteImage -> iClickable.onClickListener(DELETE_FROM_FAVORITE, breed.name)
             else -> iClickable.onClickListener(ID, breed.reference_image_id)
-
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemListCardviewBinding.inflate(inflater, parent, false)
-
         binding.apply {
             favoriteImage.setOnClickListener(this@CatsAdapter)
             deleteImage.setOnClickListener(this@CatsAdapter)
             root.setOnClickListener(this@CatsAdapter)
         }
-
         return CatHolder(binding)
     }
 
     //set data by positions
     override fun onBindViewHolder(holder: CatHolder, position: Int) {
-
         val currentItem = getItem(position)
-
         with(holder.binding) {
-
-
             root.tag = currentItem
             favoriteImage.tag = currentItem
             deleteImage.tag = currentItem

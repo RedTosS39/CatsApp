@@ -8,26 +8,7 @@ import com.example.data.room.model.CatEntity
 import com.example.data.room.repository.CatDatabaseRepository
 import kotlinx.coroutines.launch
 
-class RoomViewModel(private val catDatabaseRepository: CatDatabaseRepository) : ViewModel() {
+class RoomViewModel(catDatabaseRepository: CatDatabaseRepository) : ViewModel() {
 
     val getAllCats: LiveData<List<CatEntity>> = catDatabaseRepository.getAll().asLiveData()
-
-    fun insert(catEntity: CatEntity) {
-
-        viewModelScope.launch {
-            catDatabaseRepository.insert(catEntity)
-        }
-    }
-
-    fun delete() {
-        viewModelScope.launch {
-            catDatabaseRepository.deleteById()
-        }
-    }
-
-    fun deleteItem(title: String) {
-        viewModelScope.launch {
-            catDatabaseRepository.deleteItem(title)
-        }
-    }
 }
