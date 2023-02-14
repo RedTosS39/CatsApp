@@ -5,18 +5,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
+import android.widget.Button
 import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.room.database.AppDatabase
-import com.example.data.room.repository.CatDatabaseRepositoryImp
-import com.example.data.web.repository.CatListRepository
-import com.example.data.web.repository.CatListRepositoryImpl
 import com.example.phonesapp1212.R
 import com.example.phonesapp1212.constants.Constants.ADD_TO_FAVORITE
 import com.example.phonesapp1212.constants.Constants.DELETE_FROM_FAVORITE
@@ -27,7 +24,6 @@ import com.example.phonesapp1212.presentation.viewmodel.*
 import com.example.phonesapp1212.repository.IClickable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.coroutineScope
 
 
 class MainActivity : AppCompatActivity(), IClickable {
@@ -39,6 +35,7 @@ class MainActivity : AppCompatActivity(), IClickable {
     private lateinit var catsAdapter: CatsAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
+    private lateinit var fab: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,26 +43,34 @@ class MainActivity : AppCompatActivity(), IClickable {
         supportActionBar?.hide()
         setContentView(R.layout.activity_main)
         startSplash()
+
         testViewModel.getCatResponse()
+        fab = findViewById(R.id.fab)
         progressBar = findViewById(R.id.progress_circular)
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         catsAdapter = CatsAdapter(this@MainActivity)
+        recyclerView.adapter = catsAdapter
         initCatListFromApi()
+
+        fab.setOnClickListener {
+            startActivity(Intent(this@MainActivity, FavoriteActivity::class.java).apply {
+                putExtra(SHOW_SAVED, "0")
+            })
+        }
     }
 
     private fun initCatListFromApi() {
         // mainViewModule.apply {
-        testViewModel.apply {
-            catList.observe(this@MainActivity) {
-                it?.apply {
-                    catsAdapter.submitList(it)
-                    recyclerView.adapter = catsAdapter
-                }
+        testViewModel.catList.observe(this) {
+            it?.let {
+                Log.d("pokemon", "it: ${it.get(0).isFavorite} ")
+                catsAdapter.submitList(it)
+
             }
+            recyclerView.isVisible = true
+            progressBar.isVisible
         }
-        recyclerView.isVisible = true
-        progressBar.isVisible
     }
 
     //get key from clicked item in adapter
@@ -80,18 +85,10 @@ class MainActivity : AppCompatActivity(), IClickable {
                     })
             }
 
-            ADD_TO_FAVORITE -> { testViewModel.addToFavorite(item) }
-
-            SHOW_SAVED -> {
-                startActivity(Intent(this@MainActivity, FavoriteActivity::class.java).apply {
-                    putExtra(key, "0")
-                })
+            else -> {
+                testViewModel.updateItem(key, item)
             }
 
-            DELETE_FROM_FAVORITE -> {
-                testViewModel.deleteFromFavorite(item)
-                startActivity(Intent(this@MainActivity, FavoriteActivity::class.java))
-            }
         }
     }
 
