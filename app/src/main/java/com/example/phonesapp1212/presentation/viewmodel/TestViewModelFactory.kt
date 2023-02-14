@@ -6,9 +6,7 @@ import com.example.data.room.dao.CatDao
 import com.example.data.room.repository.CatDatabaseRepository
 import com.example.data.web.repository.CatListRepository
 
-class TestViewModelFactory(
-    private val catDao: CatDao
-) : ViewModelProvider.Factory {
+class TestViewModelFactory(private val catDao: CatDao) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(TestViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
