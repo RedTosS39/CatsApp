@@ -9,6 +9,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.log
 
 
 class CatListRepositoryImpl(private val catDatabaseRepository: CatDatabaseRepository) : CatListRepository {
@@ -17,13 +18,24 @@ class CatListRepositoryImpl(private val catDatabaseRepository: CatDatabaseReposi
     override suspend fun getCatList(): List<Breed> {
         val response = catApiServices.getCatsList()
         Log.d("pokemon", "getCatList: ${response[0].vcahospitals_url ?: "Nooooo"} ")
-        return map(response)
+        return try {
+            map(response)
+        } catch (e: java.lang.Exception) {
+            println(e.message)
+            response
+        }
     }
 
     private suspend fun map(list: List<Breed>) : List<Breed> {
+        Log.d("pokemon", "getCatList: ${list.size} ")
         return withContext(Dispatchers.IO) {
+            Log.d("pokemon", "map: ${list.size}")
             list.map {
-                it.copy(isFavorite = catDatabaseRepository.findItemByTitle(it.name))
+                if(catDatabaseRepository.findItemByTitle(it.name)) {
+                    it.copy(isFavorite = catDatabaseRepository.findItemByTitle(it.name))
+                } else {
+                    it
+                }
             }
         }
     }

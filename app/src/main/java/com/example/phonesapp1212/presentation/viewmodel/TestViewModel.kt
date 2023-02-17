@@ -55,6 +55,7 @@ class TestViewModel(
                     Toast.makeText(getApplication(), "$name added to Database", Toast.LENGTH_SHORT)
                         .show()
                     catDatabaseRepository.insert(catEntity)
+                    getCatResponse()
                 }
 
                 Constants.DELETE_FROM_FAVORITE -> {

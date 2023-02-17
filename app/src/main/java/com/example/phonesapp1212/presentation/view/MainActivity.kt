@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity(), IClickable {
             }
 
             else -> {
-                 testViewModel.updateItem(key, item)
+                testViewModel.updateItem(key, item)
             }
 
         }
