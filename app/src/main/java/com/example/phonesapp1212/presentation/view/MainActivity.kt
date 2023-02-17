@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
-import android.widget.Button
 import android.widget.ProgressBar
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,16 +13,19 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.room.database.AppDatabase
+import com.example.data.room.repository.CatDatabaseRepository
+import com.example.data.room.repository.CatDatabaseRepositoryImp
+import com.example.data.web.repository.CatListRepository
+import com.example.data.web.repository.CatListRepositoryImpl
 import com.example.phonesapp1212.R
-import com.example.phonesapp1212.constants.Constants.ADD_TO_FAVORITE
-import com.example.phonesapp1212.constants.Constants.DELETE_FROM_FAVORITE
 import com.example.phonesapp1212.constants.Constants.ID
 import com.example.phonesapp1212.constants.Constants.SHOW_SAVED
 import com.example.phonesapp1212.presentation.adapters.CatsAdapter
-import com.example.phonesapp1212.presentation.viewmodel.*
+import com.example.phonesapp1212.presentation.viewmodel.SplashViewModel
+import com.example.phonesapp1212.presentation.viewmodel.TestViewModel
+import com.example.phonesapp1212.presentation.viewmodel.TestViewModelFactory
 import com.example.phonesapp1212.repository.IClickable
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.*
 
 
 class MainActivity : AppCompatActivity(), IClickable {
@@ -31,7 +33,16 @@ class MainActivity : AppCompatActivity(), IClickable {
     private val splashViewModel: SplashViewModel by viewModels()
     private val applicationScope = CoroutineScope(SupervisorJob())
     private val database by lazy { AppDatabase.getDatabase(this, applicationScope) }
-    private val testViewModel: TestViewModel by viewModels { TestViewModelFactory(database.catDao()) }
+    private val catDatabaseRepository by lazy { CatDatabaseRepositoryImp(database.catDao()) }
+    private val catListRepository by lazy { CatListRepositoryImpl(catDatabaseRepository) }
+
+    private val testViewModel: TestViewModel by viewModels {
+        TestViewModelFactory(
+            catListRepository,
+            catDatabaseRepository,
+            application
+        )
+    }
     private lateinit var catsAdapter: CatsAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
@@ -44,7 +55,6 @@ class MainActivity : AppCompatActivity(), IClickable {
         setContentView(R.layout.activity_main)
         startSplash()
 
-        testViewModel.getCatResponse()
         fab = findViewById(R.id.fab)
         progressBar = findViewById(R.id.progress_circular)
         recyclerView = findViewById(R.id.recyclerView)
@@ -61,12 +71,11 @@ class MainActivity : AppCompatActivity(), IClickable {
     }
 
     private fun initCatListFromApi() {
-        // mainViewModule.apply {
-        testViewModel.catList.observe(this) {
-            it?.let {
-                Log.d("pokemon", "it: ${it.get(0).isFavorite} ")
-                catsAdapter.submitList(it)
 
+        testViewModel.catList.observe(this) { innerList ->
+            innerList?.let {
+                Log.d("pokemon", "initCatListFromApi: ${it.size}")
+                catsAdapter.submitList(it)
             }
             recyclerView.isVisible = true
             progressBar.isVisible
@@ -86,7 +95,7 @@ class MainActivity : AppCompatActivity(), IClickable {
             }
 
             else -> {
-                testViewModel.updateItem(key, item)
+                 testViewModel.updateItem(key, item)
             }
 
         }

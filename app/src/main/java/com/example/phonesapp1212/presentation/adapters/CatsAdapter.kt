@@ -44,13 +44,14 @@ class CatsAdapter(
     //set data by positions
     override fun onBindViewHolder(holder: CatHolder, position: Int) {
         val currentItem = getItem(position)
+        val currentBreed: Breed = currentItem
         with(holder.binding) {
-            root.tag = currentItem
-            favoriteImage.tag = currentItem
-            deleteImage.tag = currentItem
-            catDetailsImageIV.tag = currentItem
+            root.tag = currentBreed
+            favoriteImage.tag = currentBreed
+            deleteImage.tag = currentBreed
+            catDetailsImageIV.tag = currentBreed
 
-            if (currentItem.isFavorite) {
+            if (currentBreed.isFavorite) {
                 favoriteImage.setImageResource(R.drawable.ic_baseline_favorite_24_added)
             } else {
                 favoriteImage.setImageResource(R.drawable.ic_baseline_favorite_border_24)
@@ -58,12 +59,12 @@ class CatsAdapter(
 
             Log.d(
                 "pokemon",
-                "Name: ${getItem(position).name}, is it Favorite? ${currentItem.isFavorite} "
+                "Name: ${getItem(position).name}, is it Favorite? ${currentBreed.isFavorite} "
             )
 
             catDetailsBreedTV.text = getItem(position)?.name
             Picasso.get()
-                .load("https://cdn2.thecatapi.com/images/" + currentItem?.reference_image_id + ".jpg")
+                .load("https://cdn2.thecatapi.com/images/" + currentBreed?.reference_image_id + ".jpg")
                 .into(catDetailsImageIV)
         }
     }
@@ -72,7 +73,8 @@ class CatsAdapter(
 
     object ItemCallback : DiffUtil.ItemCallback<Breed>() {
         override fun areItemsTheSame(oldItem: Breed, newItem: Breed): Boolean {
-            return oldItem.isFavorite == newItem.isFavorite
+//            Log.d("pokemon", "areItemsTheSame: ${oldItem.isFavorite == newItem.isFavorite}")
+            return oldItem == newItem
         }
 
         override fun areContentsTheSame(oldItem: Breed, newItem: Breed): Boolean {

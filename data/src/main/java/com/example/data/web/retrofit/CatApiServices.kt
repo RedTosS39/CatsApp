@@ -15,7 +15,7 @@ interface CatApiServices {
 
     //Get cat list
     @GET("breeds")
-    fun getCatsList() : Call<List<Breed>>
+    suspend fun getCatsList() : List<Breed>
 
     //Get cat image by id
     @GET("images/{id}")
