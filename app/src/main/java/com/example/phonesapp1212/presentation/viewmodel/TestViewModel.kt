@@ -36,7 +36,7 @@ class TestViewModel(
 
     private fun getCatResponse() {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d("pokemon", "getCatList: ${catListRepository.getCatList().size}")
+            Log.d("pokemon", "VM getCatResponse: ${catListRepository.getCatList().size}")
             _catList.postValue(catListRepository.getCatList())
         }
     }
