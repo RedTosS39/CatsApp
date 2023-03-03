@@ -6,4 +6,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cat_breed_title">Cat breed title</string>
     <string name="show_saved_cats">show saved cats</string>
+    <string name="all_cats">All cats</string>
+    <string name="favorite_cats">Favorite cats</string>
 </resources>

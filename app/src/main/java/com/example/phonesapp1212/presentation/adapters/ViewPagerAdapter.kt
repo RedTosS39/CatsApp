@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.data.web.model.cats.BreedModel
 import com.example.data.web.model.cats.CatBreedDetails
 import com.example.phonesapp1212.R
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.squareup.picasso.Picasso
 
 
@@ -23,8 +24,8 @@ class ViewPagerAdapter(private val list: List<CatBreedDetails>)
             Picasso
                 .get()
                 .load(list[position].url)
+                .placeholder(R.drawable.progress_animation)
                 .into(image)
-
         }
     }
 

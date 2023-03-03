@@ -3,6 +3,8 @@ package com.example.phonesapp1212.presentation.view
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.ProgressBar
@@ -47,7 +49,6 @@ class MainActivity : AppCompatActivity(), IClickable {
     private lateinit var catsAdapter: CatsAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
-    private lateinit var fab: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,19 +59,12 @@ class MainActivity : AppCompatActivity(), IClickable {
 //        (applicationContext as ApplicationComponent).inject(this)
         startSplash()
 
-        fab = findViewById(R.id.fab)
         progressBar = findViewById(R.id.progress_circular)
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         catsAdapter = CatsAdapter(this@MainActivity)
         recyclerView.adapter = catsAdapter
         initCatListFromApi()
-
-        fab.setOnClickListener {
-            startActivity(Intent(this@MainActivity, FavoriteActivity::class.java).apply {
-                putExtra(SHOW_SAVED, "0")
-            })
-        }
     }
 
     private fun initCatListFromApi() {
@@ -82,6 +76,7 @@ class MainActivity : AppCompatActivity(), IClickable {
             }
             recyclerView.isVisible = true
             progressBar.isVisible
+            supportActionBar?.show()
         }
     }
 
@@ -120,5 +115,21 @@ class MainActivity : AppCompatActivity(), IClickable {
                 }
             }
         )
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        menuInflater.inflate(R.menu.bottom_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.show_all_favorites -> {
+                startActivity(Intent(this@MainActivity, FavoriteActivity::class.java))
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

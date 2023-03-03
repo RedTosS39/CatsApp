@@ -11,11 +11,13 @@ import com.example.phonesapp1212.constants.Constants.ID
 import com.example.phonesapp1212.presentation.adapters.ViewPagerAdapter
 import com.example.phonesapp1212.presentation.viewmodel.CatDetailViewModel
 import com.example.phonesapp1212.presentation.viewmodel.CurrentCatViewModel
+import com.google.android.material.progressindicator.CircularProgressIndicator
 
 class CatDetailActivity : AppCompatActivity() {
     private lateinit var catBreedDetailsTitle: TextView
     private lateinit var catDetailsTV: TextView
     private lateinit var viewPager2: ViewPager2
+    private lateinit var indicator: CircularProgressIndicator
     private val viewModel: CatDetailViewModel by lazy { ViewModelProvider(this)[CatDetailViewModel::class.java] }
     private val currentCatViewModel: CurrentCatViewModel by lazy { ViewModelProvider(this)[CurrentCatViewModel::class.java] }
 

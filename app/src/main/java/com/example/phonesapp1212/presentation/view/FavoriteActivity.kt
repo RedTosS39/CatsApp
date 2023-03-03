@@ -1,6 +1,9 @@
 package com.example.phonesapp1212.presentation.view
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -51,5 +54,21 @@ class FavoriteActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.favorite_recycler)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+        menuInflater.inflate(R.menu.bottom_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.show_all_cats -> {
+                startActivity(Intent(this@FavoriteActivity, MainActivity::class.java))
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
