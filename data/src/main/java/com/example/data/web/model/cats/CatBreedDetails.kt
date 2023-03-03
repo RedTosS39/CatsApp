@@ -8,6 +8,4 @@ data class CatBreedDetails(
     val id: String,
     val url: String,
     val width: Int
-//    @Expose(serialize = false, deserialize = false)
-//    var isSavedLocal: Boolean = false
 )

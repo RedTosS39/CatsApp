@@ -5,5 +5,5 @@ import retrofit2.Call
 
 interface GetImageByIdRepository {
 
-    suspend fun getImageById(id: String) : Call<BreedModel>
+    suspend fun getImageById(id: String) : BreedModel
 }

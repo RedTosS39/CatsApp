@@ -20,6 +20,7 @@ import com.example.data.web.repository.CatListRepositoryImpl
 import com.example.phonesapp1212.R
 import com.example.phonesapp1212.constants.Constants.ID
 import com.example.phonesapp1212.constants.Constants.SHOW_SAVED
+import com.example.phonesapp1212.di.ApplicationComponent
 import com.example.phonesapp1212.presentation.adapters.CatsAdapter
 import com.example.phonesapp1212.presentation.viewmodel.SplashViewModel
 import com.example.phonesapp1212.presentation.viewmodel.TestViewModel
@@ -53,6 +54,8 @@ class MainActivity : AppCompatActivity(), IClickable {
         installSplashScreen()
         supportActionBar?.hide()
         setContentView(R.layout.activity_main)
+
+//        (applicationContext as ApplicationComponent).inject(this)
         startSplash()
 
         fab = findViewById(R.id.fab)

@@ -11,6 +11,4 @@ interface CatListRepository {
       */
 
      suspend fun getCatList() : List<Breed>
-
-    // suspend fun mapper(list: List<Breed>) : List<Breed>
 }

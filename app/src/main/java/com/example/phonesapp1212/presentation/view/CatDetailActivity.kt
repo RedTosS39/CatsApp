@@ -5,7 +5,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
-import com.example.data.web.model.cats.BreedModel
 import com.example.data.web.model.cats.CatBreedDetails
 import com.example.phonesapp1212.R
 import com.example.phonesapp1212.constants.Constants.ID

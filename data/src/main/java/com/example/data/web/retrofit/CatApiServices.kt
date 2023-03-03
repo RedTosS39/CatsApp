@@ -19,14 +19,14 @@ interface CatApiServices {
 
     //Get cat image by id
     @GET("images/{id}")
-    fun getCatByBreed(@Path("id") id: String) : Call<CatBreedDetails>
+    suspend fun getCatByBreed(@Path("id") id: String) : CatBreedDetails
 
     //Get Array of images by breed id
     @GET("images/search")
-    fun getImageById(
+    suspend fun getImageById(
         @Query("limit") limit: Int = 10,
         @Query("breed_ids") breed_ids: String,
-        @Query("api_key") api_key: String = "REPLACE_ME") : Call<BreedModel>
+        @Query("api_key") api_key: String = "REPLACE_ME") : BreedModel
 
 
     companion object  {

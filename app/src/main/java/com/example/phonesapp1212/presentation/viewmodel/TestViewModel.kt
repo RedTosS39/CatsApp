@@ -3,20 +3,16 @@ package com.example.phonesapp1212.presentation.viewmodel
 import android.app.Application
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.*
-import com.example.data.room.dao.CatDao
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.data.room.model.CatEntity
 import com.example.data.room.repository.CatDatabaseRepository
-import com.example.data.room.repository.CatDatabaseRepositoryImp
 import com.example.data.web.model.cats.Breed
 import com.example.data.web.repository.CatListRepository
-import com.example.data.web.repository.CatListRepositoryImpl
 import com.example.phonesapp1212.constants.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class TestViewModel(
     private val catListRepository: CatListRepository,
@@ -36,7 +32,6 @@ class TestViewModel(
 
     private fun getCatResponse() {
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d("pokemon", "VM getCatResponse: ${catListRepository.getCatList().size}")
             _catList.postValue(catListRepository.getCatList())
         }
     }

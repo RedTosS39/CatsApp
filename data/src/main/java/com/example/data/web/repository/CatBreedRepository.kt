@@ -6,5 +6,5 @@ import retrofit2.Call
 
 interface CatBreedRepository {
 
-    suspend fun getBreed(id: String) : Call<CatBreedDetails>
+    suspend fun getBreed(id: String) : CatBreedDetails
 }

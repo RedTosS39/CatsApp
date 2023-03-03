@@ -9,35 +9,16 @@ import com.example.data.web.model.cats.CatBreedDetails
 import com.example.data.web.repository.CatBreedRepository
 import com.example.data.web.repository.CatBreedRepositoryImpl
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class CatDetailViewModel : ViewModel() {
 
     //insert di next
     private val catBreedRepository: CatBreedRepository = CatBreedRepositoryImpl()
+
     private val _mMutableLiveData = MutableLiveData<CatBreedDetails>()
     val liveData: LiveData<CatBreedDetails> = _mMutableLiveData
 
     fun getCatInfo(id: String) {
-        viewModelScope.launch {
-            val  response = catBreedRepository.getBreed(id)
-            response.enqueue(object : Callback<CatBreedDetails> {
-                override fun onResponse(call: Call<CatBreedDetails>, response: Response<CatBreedDetails>) {
-                    Log.d("pokemon", "onResponse: ${call.request()}")
-                    if (response.body() != null) {
-                        Log.d("pokemon", "onResponse: ${response.body()}")
-
-                        _mMutableLiveData.postValue(response.body())
-                    }
-                }
-
-                override fun onFailure(call: Call<CatBreedDetails>, t: Throwable) {
-
-                    Log.d("pokemon", "onResponse: ${t.toString()}")
-                }
-            })
-        }
+        viewModelScope.launch { _mMutableLiveData.postValue(catBreedRepository.getBreed(id)) }
     }
 }
