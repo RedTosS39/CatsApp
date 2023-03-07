@@ -5,15 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.web.model.cats.BreedModel
-import com.example.data.web.repository.GetImageByIdRepository
-import com.example.data.web.repository.GetImageByIdRepositoryImpl
+import com.example.data.web.repository.Repository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CurrentCatViewModel : ViewModel() {
+class CurrentCatViewModel(val repository: Repository) : ViewModel() {
 
     //insert di next
-    private val getImageByIdRepository: GetImageByIdRepository = GetImageByIdRepositoryImpl()
+//    private val repository: Repository = RepositoryImpl()
     private val mMutableLiveData = MutableLiveData<BreedModel>()
     val liveData: LiveData<BreedModel> = mMutableLiveData
 
@@ -21,7 +20,7 @@ class CurrentCatViewModel : ViewModel() {
     fun getCatInfo(breedId: String) {
         viewModelScope.launch(Dispatchers.IO) {
 
-            mMutableLiveData.postValue(getImageByIdRepository.getImageById(breedId))
+            mMutableLiveData.postValue(repository.getImageById(breedId))
 
         }
     }

@@ -1,19 +1,22 @@
 package com.example.data.web.repository
 
-import android.util.Log
 import com.example.data.room.repository.CatDatabaseRepository
 import com.example.data.web.model.cats.Breed
+import com.example.data.web.model.cats.BreedModel
+import com.example.data.web.model.cats.CatBreedDetails
 import com.example.data.web.retrofit.CatApiServices
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+class RepositoryImpl @Inject constructor(
+    val catApiServices: CatApiServices,
+    val catDatabaseRepository: CatDatabaseRepository
+) : Repository {
 
-class CatListRepositoryImpl (
-    private var catApiServices: CatApiServices,
-    private val catDatabaseRepository: CatDatabaseRepository
-) : CatListRepository {
-
+    override suspend fun getBreed(id: String): CatBreedDetails {
+        return withContext(Dispatchers.IO) { catApiServices.getCatByBreed(id) }
+    }
 
     override suspend fun getCatList(): List<Breed> {
 
@@ -37,5 +40,9 @@ class CatListRepositoryImpl (
                 }
             }
         }
+    }
+
+    override suspend fun getImageById(id: String): BreedModel {
+        return withContext(Dispatchers.IO) { catApiServices.getImageById(breed_ids = id) }
     }
 }

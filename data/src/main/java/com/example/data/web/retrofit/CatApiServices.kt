@@ -29,18 +29,18 @@ interface CatApiServices {
         @Query("api_key") api_key: String = "REPLACE_ME") : BreedModel
 
 
-    companion object  {
-
-        private const val BASE_URL = "https://api.thecatapi.com/v1/"
-
-        fun create() : CatApiServices {
-
-            val retrofit = Retrofit.Builder()
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BASE_URL)
-                .build()
-            return retrofit.create(CatApiServices::class.java)
-
-        }
-    }
+//    companion object  {
+//
+//        private const val BASE_URL = "https://api.thecatapi.com/v1/"
+//
+//        fun create() : CatApiServices {
+//
+//            val retrofit = Retrofit.Builder()
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .baseUrl(BASE_URL)
+//                .build()
+//            return retrofit.create(CatApiServices::class.java)
+//
+//        }
+//    }
 }

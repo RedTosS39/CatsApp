@@ -1,7 +1,6 @@
 package com.example.phonesapp1212.presentation.viewmodel
 
 import android.app.Application
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -9,13 +8,14 @@ import androidx.lifecycle.viewModelScope
 import com.example.data.room.model.CatEntity
 import com.example.data.room.repository.CatDatabaseRepository
 import com.example.data.web.model.cats.Breed
-import com.example.data.web.repository.CatListRepository
+import com.example.data.web.repository.Repository
 import com.example.phonesapp1212.constants.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class TestViewModel(
-    private val catListRepository: CatListRepository,
+class TestViewModel @Inject constructor(
+    private val repository: Repository,
     private val catDatabaseRepository: CatDatabaseRepository,
     application: Application
 ) : AndroidViewModel(application) {
@@ -32,7 +32,7 @@ class TestViewModel(
 
     private fun getCatResponse() {
         viewModelScope.launch(Dispatchers.IO) {
-            _catList.postValue(catListRepository.getCatList())
+            _catList.postValue(repository.getCatList())
         }
     }
 

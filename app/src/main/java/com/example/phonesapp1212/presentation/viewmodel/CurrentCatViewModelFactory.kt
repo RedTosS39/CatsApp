@@ -2,16 +2,15 @@ package com.example.phonesapp1212.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.data.room.repository.CatDatabaseRepository
+import com.example.data.web.repository.Repository
 import javax.inject.Inject
 
+class CurrentCatViewModelFactory @Inject constructor(private val repository: Repository) : ViewModelProvider.Factory {
 
-class RoomViewModelFactory @Inject constructor(private val catDatabaseRepository: CatDatabaseRepository) :
-    ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(RoomViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(CurrentCatViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return RoomViewModel(catDatabaseRepository) as T
+            return CurrentCatViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

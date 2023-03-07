@@ -9,29 +9,13 @@ import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class CatBreedRepositoryImpl : CatBreedRepository {
-
-    private val catApiServices = CatApiServices.create()
+class CatBreedRepositoryImpl(private val catApiServices: CatApiServices) :
+    CatBreedRepository {
 
     override suspend fun getBreed(id: String): CatBreedDetails {
 
         return withContext(Dispatchers.IO) { catApiServices.getCatByBreed(id) }
-
-//        var list = mutableListOf<CatBreedDetails>()
-//        response.enqueue(object : Callback<CatBreedDetails> {
-//            override fun onResponse(call: Call<CatBreedDetails>, response: Response<CatBreedDetails>) {
-//                Log.d("pokemon", "onResponse: ${call.request()}")
-//                if (response.body() != null) {
-//                    Log.d("pokemon", "onResponse: ${response.body()}")
-//                    list = response.body()
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<CatBreedDetails>, t: Throwable) {
-//
-//                Log.d("pokemon", "onResponse: ${t.toString()}")
-//            }
-//        })
     }
 }

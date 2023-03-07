@@ -1,5 +1,6 @@
 package com.example.phonesapp1212.presentation.view
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,46 +16,49 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.room.database.AppDatabase
-import com.example.data.room.repository.CatDatabaseRepository
 import com.example.data.room.repository.CatDatabaseRepositoryImp
-import com.example.data.web.repository.CatListRepository
-import com.example.data.web.repository.CatListRepositoryImpl
+import com.example.data.web.repository.RepositoryImpl
 import com.example.phonesapp1212.R
 import com.example.phonesapp1212.constants.Constants.ID
-import com.example.phonesapp1212.constants.Constants.SHOW_SAVED
-import com.example.phonesapp1212.di.ApplicationComponent
+import com.example.phonesapp1212.di.App
+import com.example.phonesapp1212.di.AppComponent
 import com.example.phonesapp1212.presentation.adapters.CatsAdapter
 import com.example.phonesapp1212.presentation.viewmodel.SplashViewModel
 import com.example.phonesapp1212.presentation.viewmodel.TestViewModel
 import com.example.phonesapp1212.presentation.viewmodel.TestViewModelFactory
 import com.example.phonesapp1212.repository.IClickable
-import kotlinx.coroutines.*
 
-
+val Context.appComponent: AppComponent
+get() = when(this) {
+    is App -> appComponent
+    else -> this.applicationContext.appComponent
+}
 class MainActivity : AppCompatActivity(), IClickable {
-
+    private lateinit var catsAdapter: CatsAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var progressBar: ProgressBar
     private val splashViewModel: SplashViewModel by viewModels()
-    private val applicationScope = CoroutineScope(SupervisorJob())
-    private val database by lazy { AppDatabase.getDatabase(this, applicationScope) }
+
+    private val database by lazy { AppDatabase.getDatabase(this) }
     private val catDatabaseRepository by lazy { CatDatabaseRepositoryImp(database.catDao()) }
-    private val catListRepository by lazy { CatListRepositoryImpl(catDatabaseRepository) }
+    private val repository by lazy { RepositoryImpl() }
 
     private val testViewModel: TestViewModel by viewModels {
         TestViewModelFactory(
-            catListRepository,
+            repository,
             catDatabaseRepository,
             application
         )
     }
-    private lateinit var catsAdapter: CatsAdapter
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         supportActionBar?.hide()
         setContentView(R.layout.activity_main)
+
+        appComponent.inject(this)
 
 //        (applicationContext as ApplicationComponent).inject(this)
         startSplash()

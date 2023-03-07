@@ -64,7 +64,7 @@ class CatsAdapter(
 
             catDetailsBreedTV.text = getItem(position)?.name
             Picasso.get()
-                .load("https://cdn2.thecatapi.com/images/" + currentBreed?.reference_image_id + ".jpg")
+                .load("https://cdn2.thecatapi.com/images/" + currentBreed.reference_image_id + ".jpg")
                 .into(catDetailsImageIV)
         }
     }
