@@ -25,7 +25,7 @@ class CatsAdapter(
         val breed = v?.tag as Breed
         when (v.id) {
             R.id.favoriteImage -> iClickable.onClickListener(ADD_TO_FAVORITE, breed.name)
-            R.id.deleteImage -> iClickable.onClickListener(DELETE_FROM_FAVORITE, breed.name)
+//            R.id.deleteImage -> iClickable.onClickListener(DELETE_FROM_FAVORITE, breed.name)
             else -> iClickable.onClickListener(ID, breed.reference_image_id)
         }
     }
@@ -35,7 +35,7 @@ class CatsAdapter(
         val binding = ItemListCardviewBinding.inflate(inflater, parent, false)
         binding.apply {
             favoriteImage.setOnClickListener(this@CatsAdapter)
-            deleteImage.setOnClickListener(this@CatsAdapter)
+    //        deleteImage.setOnClickListener(this@CatsAdapter)
             root.setOnClickListener(this@CatsAdapter)
         }
         return CatHolder(binding)
@@ -48,7 +48,7 @@ class CatsAdapter(
         with(holder.binding) {
             root.tag = currentBreed
             favoriteImage.tag = currentBreed
-            deleteImage.tag = currentBreed
+       //     deleteImage.tag = currentBreed
             catDetailsImageIV.tag = currentBreed
 
             if (currentBreed.isFavorite) {

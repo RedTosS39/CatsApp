@@ -47,22 +47,27 @@ class TestViewModel @Inject constructor(
         viewModelScope.launch {
             when (key) {
                 Constants.ADD_TO_FAVORITE -> {
-                    val catEntity = CatEntity(null, name, "Desc", "Url")
-                    Toast.makeText(getApplication(), "$name added to Database", Toast.LENGTH_SHORT)
-                        .show()
-                    catDatabaseRepository.insert(catEntity)
-                    getCatResponse()
+                    if(catDatabaseRepository.findItemByTitle(name)) {
+                        catDatabaseRepository.deleteItem(name)
+                        getCatResponse()
+                    } else {
+                        val catEntity = CatEntity(null, name, "Desc", "Url")
+                        Toast.makeText(getApplication(), "$name added to Database", Toast.LENGTH_SHORT)
+                            .show()
+                        catDatabaseRepository.insert(catEntity)
+                        getCatResponse()
+                    }
                 }
 
-                Constants.DELETE_FROM_FAVORITE -> {
-                    catDatabaseRepository.deleteItem(name)
-                    Toast.makeText(
-                        getApplication(),
-                        "$name removed from Database",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    getCatResponse()
-                }
+//                Constants.DELETE_FROM_FAVORITE -> {
+//                    catDatabaseRepository.deleteItem(name)
+//                    Toast.makeText(
+//                        getApplication(),
+//                        "$name removed from Database",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    getCatResponse()
+//                }
             }
         }
 
