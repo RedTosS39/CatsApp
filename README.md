@@ -6,7 +6,7 @@ To run the project, you don't need to make any settings. All you need is to clon
 
 # Used tech
 ###
-- Kotlin
+- Kotlin 🔥
 - Kotlin flows
 - Coroutines - Asynchronous
 - Clean Architecture - CLean architecture in Android
@@ -15,5 +15,5 @@ To run the project, you don't need to make any settings. All you need is to clon
 - Dagger2
 - Room - The Room persistance library provides a abstraction layer over SQLite to allow for more robust database access while harnessing the full power of SQLite
 
-# Find this repository useful?
+# Find this repository useful? ❤️
 Support it by joing stargazers for this repository.
