@@ -1,4 +1,4 @@
-# CatsApp
+# CatsApp :cat:
 This is simple app using Room, Retrofit, Dagger2
 
 # Get started
