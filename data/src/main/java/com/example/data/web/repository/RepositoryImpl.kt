@@ -10,10 +10,9 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
-    val catApiServices: CatApiServices,
     val catDatabaseRepository: CatDatabaseRepository
 ) : Repository {
-
+    private val catApiServices: CatApiServices = CatApiServices.create()
     override suspend fun getBreed(id: String): CatBreedDetails {
         return withContext(Dispatchers.IO) { catApiServices.getCatByBreed(id) }
     }

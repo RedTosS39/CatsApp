@@ -6,7 +6,7 @@ import com.example.data.room.repository.CatDatabaseRepository
 import javax.inject.Inject
 
 
-class RoomViewModelFactory @Inject constructor(private val catDatabaseRepository: CatDatabaseRepository) :
+class RoomViewModelFactory @Inject constructor(val catDatabaseRepository: CatDatabaseRepository) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RoomViewModel::class.java)) {

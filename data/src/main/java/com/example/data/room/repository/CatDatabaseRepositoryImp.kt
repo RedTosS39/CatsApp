@@ -6,7 +6,8 @@ import com.example.data.room.model.CatEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class CatDatabaseRepositoryImp @Inject constructor(private val catDao: CatDao) : CatDatabaseRepository {
+class CatDatabaseRepositoryImp @Inject constructor(val catDao: CatDao) :
+    CatDatabaseRepository {
 
     //it will notify the observer when the data has changed
     private val allCats: Flow<List<CatEntity>> = catDao.getAll()
@@ -29,7 +30,7 @@ class CatDatabaseRepositoryImp @Inject constructor(private val catDao: CatDao) :
         catDao.deleteItem(title)
     }
 
-    override suspend fun findItemByTitle(title: String) : Boolean {
+    override suspend fun findItemByTitle(title: String): Boolean {
         return catDao.findItemByTitle(title)
 
     }

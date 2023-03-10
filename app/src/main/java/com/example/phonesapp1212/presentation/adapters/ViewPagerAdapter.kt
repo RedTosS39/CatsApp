@@ -1,16 +1,12 @@
 package com.example.phonesapp1212.presentation.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-
-import com.example.data.web.model.cats.BreedModel
 import com.example.data.web.model.cats.CatBreedDetails
 import com.example.phonesapp1212.R
-import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.squareup.picasso.Picasso
 
 

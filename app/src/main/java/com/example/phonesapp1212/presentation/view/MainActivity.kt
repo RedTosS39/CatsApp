@@ -1,5 +1,6 @@
 package com.example.phonesapp1212.presentation.view
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -16,8 +17,8 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.data.room.database.AppDatabase
-import com.example.data.room.repository.CatDatabaseRepositoryImp
-import com.example.data.web.repository.RepositoryImpl
+import com.example.data.room.repository.CatDatabaseRepository
+import com.example.data.web.repository.Repository
 import com.example.phonesapp1212.R
 import com.example.phonesapp1212.constants.Constants.ID
 import com.example.phonesapp1212.di.App
@@ -27,6 +28,7 @@ import com.example.phonesapp1212.presentation.viewmodel.SplashViewModel
 import com.example.phonesapp1212.presentation.viewmodel.TestViewModel
 import com.example.phonesapp1212.presentation.viewmodel.TestViewModelFactory
 import com.example.phonesapp1212.repository.IClickable
+import javax.inject.Inject
 
 val Context.appComponent: AppComponent
 get() = when(this) {
@@ -39,43 +41,32 @@ class MainActivity : AppCompatActivity(), IClickable {
     private lateinit var progressBar: ProgressBar
     private val splashViewModel: SplashViewModel by viewModels()
 
-    private val database by lazy { AppDatabase.getDatabase(this) }
-    private val catDatabaseRepository by lazy { CatDatabaseRepositoryImp(database.catDao()) }
-    private val repository by lazy { RepositoryImpl() }
+    @Inject
+    lateinit var factory: TestViewModelFactory.Factory
 
     private val testViewModel: TestViewModel by viewModels {
-        TestViewModelFactory(
-            repository,
-            catDatabaseRepository,
-            application
-        )
+        factory.create(application)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
         supportActionBar?.hide()
         setContentView(R.layout.activity_main)
-
         appComponent.inject(this)
-
-//        (applicationContext as ApplicationComponent).inject(this)
         startSplash()
+        init()
+    }
 
+    private fun init() {
         progressBar = findViewById(R.id.progress_circular)
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
         catsAdapter = CatsAdapter(this@MainActivity)
         recyclerView.adapter = catsAdapter
-        initCatListFromApi()
-    }
-
-    private fun initCatListFromApi() {
 
         testViewModel.catList.observe(this) { innerList ->
             innerList?.let {
-                Log.d("pokemon", "initCatListFromApi: ${it.size}")
                 catsAdapter.submitList(it)
             }
             recyclerView.isVisible = true
@@ -86,9 +77,7 @@ class MainActivity : AppCompatActivity(), IClickable {
 
     //get key from clicked item in adapter
     override fun onClickListener(key: String, item: String) {
-        //send item by key
         when (key) {
-            //to details activity
             ID -> {
                 startActivity(
                     Intent(this@MainActivity, CatDetailActivity::class.java).apply {
@@ -122,7 +111,6 @@ class MainActivity : AppCompatActivity(), IClickable {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
         menuInflater.inflate(R.menu.bottom_menu, menu)
         return true
     }

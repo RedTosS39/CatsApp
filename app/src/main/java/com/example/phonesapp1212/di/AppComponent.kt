@@ -9,8 +9,9 @@ import dagger.BindsInstance
 import dagger.Component
 import dagger.Subcomponent.Factory
 
-@Component (modules = [AppModule::class])
 
+
+@Component (modules = [AppModule::class])
 interface AppComponent {
 
     fun inject(mainActivity: MainActivity)

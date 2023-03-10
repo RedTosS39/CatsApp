@@ -1,6 +1,7 @@
 package com.example.phonesapp1212.presentation.viewmodel
 
 import android.app.Application
+import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
@@ -15,8 +16,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class TestViewModel @Inject constructor(
-    private val repository: Repository,
-    private val catDatabaseRepository: CatDatabaseRepository,
+    val repository: Repository,
+    val catDatabaseRepository: CatDatabaseRepository,
     application: Application
 ) : AndroidViewModel(application) {
 
@@ -64,4 +65,6 @@ class TestViewModel @Inject constructor(
                 }
             }
         }
+
+
 }
